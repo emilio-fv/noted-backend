@@ -27,11 +27,12 @@ jobs:
         shell: bash
 
       - name: Build & start Docker container
-        run: npm run test:start
+        run: |
+          npm run test:start
 
       - name: Check test status
         run: |
-          if [ $? -eq 0]: then
+          if [ $? -eq 0 ]; then
             echo "Tests passed!"
             npm run test:stop
           else
