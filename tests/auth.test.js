@@ -73,7 +73,6 @@ describe("POST /api/auth/register", () => {
         expect(res.statusCode).toBe(400);
         expect(res.body.username).toHaveProperty('message', 'Username already registered.');
         expect(res.body.email).toHaveProperty('message', 'Email already registered.');
-
     })
 
     it("Should return error code 400 & messages if password does not meet security requirements", async () => {

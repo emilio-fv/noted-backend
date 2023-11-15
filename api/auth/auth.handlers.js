@@ -17,6 +17,7 @@ const logger = require('../../utils/logger.util');
 const handleRegister = async (req, res) => {
     logger.info('Registering user...')
     try {
+
         const userWithSameEmail = await getUserByEmail(req.body.email);
         const userWithSameUsername = await getUserByUsername(req.body.username);
 
@@ -25,6 +26,7 @@ const handleRegister = async (req, res) => {
                 email: userWithSameEmail ? { message: 'Email already registered.' } : null,
                 username: userWithSameUsername ? { message: 'Username already registered.'} : nul
             }
+            
             return res.status(400)
                 .json(errors)
         }
@@ -64,9 +66,9 @@ const handleRegister = async (req, res) => {
                 message: 'Confirm password required.'
             }
         }
-        
+
         res.status(400)
-            .json(errors)
+            .json(errors);
     }
 };
 
