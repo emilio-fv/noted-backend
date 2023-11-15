@@ -12,10 +12,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
-// TODO Setup API endpoints
+// API endpoints
 app.use('/api/auth', authRouter);
 
-// Test API endpoint
+// Entry API endpoint
 app.get('/', async (req, res) => 
     res.send('Noted Backend Server')
 );
