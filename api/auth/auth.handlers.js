@@ -12,9 +12,10 @@ const {
     getAllUsers,
     getUserById,
 } = require('./auth.services');
+const logger = require('../../utils/logger.util');
 
 const handleRegister = async (req, res) => {
-    // TODO log handler
+    logger.info('Registering user...')
     try {
         const userWithSameEmail = await getUserByEmail(req.body.email);
         const userWithSameUsername = await getUserByUsername(req.body.username);
@@ -52,6 +53,8 @@ const handleRegister = async (req, res) => {
                 username: newUser.username,
             })
     } catch (error) {
+        logger.error('An error occurred: ', error);
+
         let errors = {
             ...error.errors
         };
@@ -68,6 +71,8 @@ const handleRegister = async (req, res) => {
 };
 
 const handleLogin = async (req, res) => {
+    logger.info('Logging user in...');
+
     try {
         const formData = req.body;
 
@@ -117,7 +122,7 @@ const handleLogin = async (req, res) => {
                 // followers: existingUser.followers,
             })
     } catch (error) {
-        console.log(error);
+        logger.error('An error occurred: ', error);
         res.status(400).json(error);
         // TODO: handle errors
     }
@@ -125,7 +130,8 @@ const handleLogin = async (req, res) => {
 
 // Logout user
 const handleLogout = async (req, res) => {
-    // TODO: Log handler
+    logger.info('Logging user out...');
+
     res.status(200)
         .clearCookie('accessToken')
         .clearCookie('refreshToken')
@@ -136,7 +142,8 @@ const handleLogout = async (req, res) => {
 
 // Refresh access token
 const handleRefreshAccessToken = async (req, res) => {
-    // TODO log handler
+    logger.info('Refreshing access token...');
+
     try {
         const { refreshToken } = req.cookies;
 
@@ -164,13 +171,16 @@ const handleRefreshAccessToken = async (req, res) => {
             })
             .json('Access token refreshed successfully.');
     } catch (error) {
-        // TODO: handle errors
+        logger.error('An error occurred: ', error);
+
         res.status(400)
             .json(error);
     }
 };
 
 const handleGetLoggedInUsersData = async (req, res) => {
+    logger.info("Getting logged in user's data");
+
     try {
         const decodedToken = req.decoded;
 
@@ -184,6 +194,8 @@ const handleGetLoggedInUsersData = async (req, res) => {
                 email: loggedInUser.email
             })
     } catch (error) {
+        logger.error('An error occurred: ', error);
+
         res.status(400)
             .json(error)
     }
