@@ -12,10 +12,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: docker:20.10.9
-        options: --entrypoint-entrypoint
+    # services:
+    #   docker:
+    #     image: docker:20.10.9
+    #     options: --entrypoint-entrypoint
 
     steps:
       - name: Chekcout code
