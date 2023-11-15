@@ -1,0 +1,28 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Staging
+
+on:
+  push:
+    branches: [ "development", "main" ]
+  pull_request:
+    branches: [ "development", "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:20.10.9
+        options: --entrypoint-entrypoint
+
+    steps:
+      - name: Chekcout code
+        uses: actions/checkout@v3
+
+      - name: Build & start Docker container
+        run: npm run test:start
+
+      - name: Cleanup
+        run: npm run test:stop
