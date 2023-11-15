@@ -17,6 +17,10 @@ jobs:
       - name: Chekcout code
         uses: actions/checkout@v3
 
+      - name: Create env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+
       - name: Build & start Docker container
         run: npm run test:start
 
