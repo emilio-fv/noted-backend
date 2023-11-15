@@ -11,8 +11,8 @@ services:
       - NODE_ENV=test
       - PORT=3000
       - MONGODB_URI=mongodb://mongo:27017/noted-dev
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
     volumes:
       - .:/app
       - /app/node_modules
