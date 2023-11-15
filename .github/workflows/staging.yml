@@ -12,10 +12,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # services:
-    #   docker:
-    #     image: docker:20.10.9
-    #     options: --entrypoint-entrypoint
 
     steps:
       - name: Chekcout code
@@ -24,5 +20,16 @@ jobs:
       - name: Build & start Docker container
         run: npm run test:start
 
-      - name: Cleanup
-        run: npm run test:stop
+      - name: Check test status
+        run: |
+          if [ $? -eq 0]: then
+            echo "Tests passed!"
+            npm run test:stop
+          else
+            echo "Tests failed."
+            exit 1
+          fi
+
+
+      # - name: Cleanup
+      #   run: npm run test:stop
