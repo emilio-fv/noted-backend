@@ -29,6 +29,7 @@ jobs:
       - name: Build docker containers & run tests
         run: npm run test:run
 
+# TODO: upon successful tests, create pull request
       # - name: Cleanup
       #   if: success()
       #   run: npm run test:stop
