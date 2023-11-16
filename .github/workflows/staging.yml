@@ -31,12 +31,26 @@ jobs:
         run: |
           npm run test:start
 
+  cleanup:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Cleanup
         run: |
-          if [ steps.test.outcome === 'success' ]; then
+          if [ "${{ needs.test.outcome }}" == 'success' ]; then
             echo "Tests passed!"
             npm run test:stop
           else
             echo "Tests failed."
             exit 1
-          fi
+      #     fi
+      # - name: Cleanup
+      #   run: |
+      #     if [ steps.test.outcome === 'success' ]; then
+      #       echo "Tests passed!"
+      #       npm run test:stop
+      #     else
+      #       echo "Tests failed."
+      #       exit 1
+      #     fi
