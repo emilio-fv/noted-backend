@@ -27,16 +27,15 @@ jobs:
         shell: bash
 
       - name: Build docker containers & run tests
-        id: test
-        run: |
-          npm run test:start
+        run: npm run test:start
 
       - name: Cleanup
-        run: |
-          if [ "${{ steps.test.outcome }}" == 'success' ]; then
-            echo "Tests passed!"
-            npm run test:stop
-          else
-            echo "Tests failed."
-            exit 1
-          fi
+        if: success()
+        run: npm run test:stop
+          # # if [ "${{ steps.test.outcome }}" == 'success' ]; then
+          #   echo "Tests passed!"
+            
+          # else
+          #   echo "Tests failed."
+          #   exit 1
+          # fi
