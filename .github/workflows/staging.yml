@@ -27,7 +27,7 @@ jobs:
         shell: bash
 
       - name: Build docker containers & run tests
-        run: npm run test:run
+        run: npm run test:start
 
 # TODO: upon successful tests, create pull request
       # - name: Cleanup
