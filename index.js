@@ -11,6 +11,7 @@ const { authRouter } = require('./api/auth/auth.routes');
 
 const origins = [
     // TODO
+    '*'
 ]
 
 // Middleware
