@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(helmet());
 
 // API endpoints
-// app.use('/api/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 // Entry API endpoint
 app.get('/', async (req, res) => {
