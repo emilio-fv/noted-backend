@@ -1,7 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Staging
+name: Test
 
 on:
   push:
@@ -37,15 +34,3 @@ jobs:
             echo "Tests failed!"
             exit 1
           fi
-
-# TODO: upon successful tests, create pull request
-      # - name: Cleanup
-      #   if: success()
-      #   run: npm run test:stop
-      #     # # if [ "${{ steps.test.outcome }}" == 'success' ]; then
-      #     #   echo "Tests passed!"
-            
-      #     # else
-      #     #   echo "Tests failed."
-      #     #   exit 1
-      #     # fi
