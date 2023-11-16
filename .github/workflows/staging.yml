@@ -26,18 +26,17 @@ jobs:
           echo REFRESH_EXPIRATION="${{ secrets.REFRESH_EXPIRATION }}" >> .env
         shell: bash
 
-      - name: Build & run tests
+      - name: Build docker containers & run tests
+        id: test
         run: |
           npm run test:start
-          exit_code=$?
-          if [ $exit_code -eq 0 ]; then
+
+      - name: Cleanup
+        run: |
+          if [ steps.test.outcome === 'success' ]; then
             echo "Tests passed!"
             npm run test:stop
           else
             echo "Tests failed."
             exit 1
           fi
-
-
-      # - name: Cleanup
-      #   run: npm run test:stop
