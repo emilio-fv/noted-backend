@@ -7,7 +7,7 @@
     "start": "nodemon index.js",
     "dev:start": "docker compose -f docker-compose.yml up -d --build",
     "dev:stop": "docker compose -f docker-compose.yml down",
-    "test": "jest --watchAll --detectOpenHandles --testTimeout=30000",
+    "test": "jest --runInBand --testTimeout=30000",
     "test:start": "docker compose -f docker-compose.test.yml up --build",
     "test:stop": "docker compose -f docker-compose.test.yml down"
   },
