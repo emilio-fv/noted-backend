@@ -29,9 +29,6 @@ jobs:
       - name: Build & start Docker container
         run: |
           npm run test:start
-
-      - name: Check test status
-        run: |
           if [ $? -eq 0 ]; then
             echo "Tests passed!"
             npm run test:stop
@@ -39,6 +36,9 @@ jobs:
             echo "Tests failed."
             exit 1
           fi
+
+      # - name: Check test status
+      #   run: |
 
 
       # - name: Cleanup
