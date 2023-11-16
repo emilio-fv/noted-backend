@@ -27,7 +27,15 @@ jobs:
         shell: bash
 
       - name: Build docker containers & run tests
-        run: npm run test:start
+        run: |
+          npm run test:start
+          exit_code=$?
+          if [ $exit_code -eq 0 ]; then
+            echo "Tests passed!"
+          else
+            echo "Tests failed!"
+            exit 1
+          fi
 
 # TODO: upon successful tests, create pull request
       # - name: Cleanup
