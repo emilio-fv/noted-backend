@@ -3,6 +3,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const process = require('node:process');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const { connectDb } = require('./config/mongoose.config');

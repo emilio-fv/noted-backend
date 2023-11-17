@@ -1,5 +1,6 @@
 // Imports
 const jwt = require('jsonwebtoken');
+const process = require('node:process');
 
 const generateAccessToken = async (payload) => {
     const accessToken = jwt.sign(

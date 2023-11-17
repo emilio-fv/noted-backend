@@ -9,7 +9,6 @@ const {
     createUser,
     getUserByEmail,
     getUserByUsername,
-    getAllUsers,
     getUserById,
 } = require('./auth.services');
 const logger = require('../../utils/logger.util');
@@ -24,7 +23,7 @@ const handleRegister = async (req, res) => {
         if (userWithSameEmail.length > 0 || userWithSameUsername.length > 0) {
             const errors = {
                 email: userWithSameEmail ? { message: 'Email already registered.' } : null,
-                username: userWithSameUsername ? { message: 'Username already registered.'} : nul
+                username: userWithSameUsername ? { message: 'Username already registered.'} : null
             }
             
             return res.status(400)
@@ -201,7 +200,6 @@ const handleGetLoggedInUsersData = async (req, res) => {
         res.status(400)
             .json(error)
     }
-    const allUsers = await getAllUsers();
 }
 
 // Exports
