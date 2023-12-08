@@ -12,9 +12,9 @@ const { seedDb } = require('./seed');
 const { authRouter } = require('./api/auth/auth.routes');
 
 const origins = [
-    'http://localhost:3000', // dev
-    'https://noted-frontend-emilio-fv.vercel.app', // prod
-    'https://noted-frontend.vercel.app',
+    'http://localhost:3000', // dev domain
+    'https://noted-frontend-emilio-fv.vercel.app', // prod domain
+    'https://noted-frontend.vercel.app', // prod domain
 ];
 
 // Middleware
