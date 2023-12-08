@@ -1,7 +1,7 @@
 // Imports
 const mongoose = require('mongoose');
 const process = require('node:process');
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = encodeURIComponent(process.env.MONGODB_URI);
 
 // Connect to mongodb 
 const connectDb = async () => {
