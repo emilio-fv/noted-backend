@@ -138,7 +138,7 @@ describe("POST /api/auth/login", () => {
             });
 
         expect(res.statusCode).toBe(400);
-        expect(res.body).toHaveProperty('error', 'Invalid login');
+        expect(res.body).toHaveProperty('error', 'Invalid login.');
     });
 
     it("Should return error code 400 & message for incorrect password.", async () => {
@@ -150,7 +150,7 @@ describe("POST /api/auth/login", () => {
             });
 
         expect(res.statusCode).toBe(400);
-        expect(res.body).toHaveProperty('error', 'Invalid login');
+        expect(res.body).toHaveProperty('error', 'Invalid login.');
     });
 
     it("Should return success code 200, cookies with access & refresh tokens, and the user's username when valid form data is provided", async () => {
