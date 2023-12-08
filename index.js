@@ -13,7 +13,8 @@ const { authRouter } = require('./api/auth/auth.routes');
 
 const origins = [
     'http://localhost:3000', // dev
-    'https://noted-frontend-emilio-fv.vercel.app' // prod
+    'https://noted-frontend-emilio-fv.vercel.app', // prod
+    'https://noted-frontend.vercel.app/'
 ]
 
 // Middleware
