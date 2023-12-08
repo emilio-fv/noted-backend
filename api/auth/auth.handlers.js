@@ -9,7 +9,6 @@ const {
     createUser,
     getUserByEmail,
     getUserByUsername,
-    getAllUsers,
     getUserById,
 } = require('./auth.services');
 const logger = require('../../utils/logger.util');
@@ -18,15 +17,15 @@ const handleRegister = async (req, res) => {
     logger.info('Registering user...')
     try {
 
-        const userWithSameEmail = await getUserByEmail(req.body.email);
         const userWithSameUsername = await getUserByUsername(req.body.username);
+        const userWithSameEmail = await getUserByEmail(req.body.email);
 
         if (userWithSameEmail.length > 0 || userWithSameUsername.length > 0) {
             const errors = {
+                username: userWithSameUsername ? { message: 'Username already registered.'} : null,
                 email: userWithSameEmail ? { message: 'Email already registered.' } : null,
-                username: userWithSameUsername ? { message: 'Username already registered.'} : nul
-            }
-            
+            };
+
             return res.status(400)
                 .json(errors)
         }
@@ -83,7 +82,7 @@ const handleLogin = async (req, res) => {
         if (existingUser.length === 0) {
             return res.status(400)
                 .json({
-                    error: 'Invalid login'
+                    error: 'Invalid login.'
                 });
         }
 
@@ -92,7 +91,7 @@ const handleLogin = async (req, res) => {
         if (!correctPassword) {
             return res.status(400)
                 .json({
-                    error: 'Invalid login'
+                    error: 'Invalid login.'
                 });
         }
 
@@ -201,7 +200,6 @@ const handleGetLoggedInUsersData = async (req, res) => {
         res.status(400)
             .json(error)
     }
-    const allUsers = await getAllUsers();
 }
 
 // Exports

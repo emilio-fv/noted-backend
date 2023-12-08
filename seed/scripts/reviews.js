@@ -1,5 +1,5 @@
 // Imports
-const { faker } = require('@faker-js/faker');
+// const { faker } = require('@faker-js/faker');
 
 // Generate fake review data
 const generateReviews = async () => {

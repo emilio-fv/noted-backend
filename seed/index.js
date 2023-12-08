@@ -1,6 +1,6 @@
 // Imports
 const { generateUsers } = require('./scripts/users');
-const { generateReviews } = require('./scripts/reviews');
+// const { generateReviews } = require('./scripts/reviews');
 const { User } = require('../models/user');
 
 // Seed mongodb
@@ -19,6 +19,7 @@ const seedDb = async () => {
             return res;
         });
 
+        console.log(newUsers);
         // TODO: add reviews
 
         // TODO Create relationships
