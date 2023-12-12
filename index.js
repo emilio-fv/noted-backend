@@ -11,26 +11,17 @@ const { connectDb } = require('./config/mongoose.config');
 const { seedDb } = require('./seed');
 const { authRouter } = require('./api/auth/auth.routes');
 
-const origins = [
-    'http://localhost:3000', // dev domain
-    'https://noted-frontend-emilio-fv.vercel.app', // prod domain
-    'https://noted-frontend.vercel.app', // prod domain
-];
-
 // Middleware
 app.use(cors({
-    origin: function(origin, callback) {
-        if(!origin || origins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Origin not allowed by CORS'))
-        }
-    },
+    origin: [
+        'http://localhost:3000', // dev domain
+        'https://noted-frontend-emilio-fv.vercel.app', // prod domain
+        'https://noted-frontend.vercel.app', // prod domain
+    ],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
     methods: ['POST', 'PUT', 'GET'],
-    credentials: true
-
-}))
+    credentials: true,
+}));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
