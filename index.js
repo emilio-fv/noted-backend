@@ -14,9 +14,9 @@ const { authRouter } = require('./api/auth/auth.routes');
 // Middleware
 app.use(cors({
     origin: [
-        'http://localhost:3000', // dev domain
-        'https://noted-frontend-emilio-fv.vercel.app', // prod domain
-        'https://noted-frontend.vercel.app', // prod domain
+        'http://localhost:8000', // dev
+        'https://noted-frontend-emilio-fv.vercel.app', // prod
+        'https://noted-frontend.vercel.app', // prod
     ],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
     methods: ['POST', 'PUT', 'GET'],
