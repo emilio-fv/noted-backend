@@ -1,7 +1,7 @@
 // Imports
 const mongoose = require('mongoose');
 const process = require('node:process');
-const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${encodeURIComponent(process.env.MONGODB_PASSWORD)}@cluster0.phxrehb.mongodb.net/?retryWrites=true&w=majority`
+const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${encodeURIComponent(process.env.MONGODB_PASSWORD)}@cluster0.phxrehb.mongodb.net/?retryWrites=true&w=majority`;
 
 
 // Connect to mongodb 
