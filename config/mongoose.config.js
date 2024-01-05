@@ -6,8 +6,6 @@ const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${encodeURICo
 
 // Connect to mongodb 
 const connectDb = async () => {
-    console.log(MONGODB_URI);
-
     try {
         await mongoose.connect(MONGODB_URI).then(() => {
             console.log('Connected to db successfully');
