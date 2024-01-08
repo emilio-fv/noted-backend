@@ -11,16 +11,29 @@ const { connectDb } = require('./config/mongoose.config');
 const { seedDb } = require('./seed');
 const { authRouter } = require('./api/auth/auth.routes');
 
+const allowedOrigins = [
+    'http://localhost:3000', // dev domain
+    'https://noted-frontend-emilio-fv.vercel.app', // prod domain
+    'https://noted-frontend.vercel.app', // prod domain
+];
+
 // Middleware
 app.use(cors({
-    origin: [
-        'http://localhost:8000', // dev
-        'https://noted-frontend-emilio-fv.vercel.app', // prod
-        'https://noted-frontend.vercel.app', // prod
-    ],
+    origin: function(origin, callback){
+        // allow requests with no origin
+        // (like mobile apps or curl requests)
+        if(!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+          var msg = 'The CORS policy for this site does not ' +
+                    'allow access from the specified Origin.';
+          return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+      },
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
     methods: ['POST', 'PUT', 'GET'],
     credentials: true,
+    exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
 }));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
