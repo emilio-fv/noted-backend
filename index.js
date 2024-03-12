@@ -12,7 +12,7 @@ const { seedDb } = require('./seed');
 const { authRouter } = require('./api/auth/auth.routes');
 
 const allowedOrigins = [
-    'http://localhost:3000', // dev domain
+    'http://localhost:8000', // dev domain
     'https://noted-frontend-emilio-fv.vercel.app', // prod domain
     'https://noted-frontend.vercel.app', // prod domain
 ];
