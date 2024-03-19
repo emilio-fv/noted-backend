@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 const { connectDb } = require('./config/mongoose.config');
 const { seedDb } = require('./seed');
 const { authRouter } = require('./api/auth/auth.routes');
+// TODO import music router
 
 const allowedOrigins = [
     'http://localhost:8000', // dev domain
@@ -42,6 +43,7 @@ app.use(helmet());
 
 // API endpoints
 app.use('/api/auth', authRouter);
+// TODO: Add music router
 
 // Entry API endpoint
 app.get('/', async (req, res) => {
