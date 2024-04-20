@@ -14,7 +14,7 @@ const {
 const logger = require('../../utils/logger.util');
 
 const handleRegister = async (req, res) => {
-    logger.info('Registering user...')
+    logger.info('Registering user...');
     try {
 
         const userWithSameUsername = await getUserByUsername(req.body.username);
