@@ -2,7 +2,6 @@
 const axios = require('axios');
 
 const getSpotifyAccessToken = async () => {
-    // make axios request
     const response = axios.post('https://accounts.spotify.com/api/token', {
         'grant_type': 'client_credentials',
     }, {
@@ -15,6 +14,26 @@ const getSpotifyAccessToken = async () => {
     return response;
 };
 
+/**
+ * Requests top 5 newly released albums from Spotify API
+ * @param {object} spotifyToken 
+ * @returns 
+ */
+const getSpotifyFeaturedAlbums = async (spotifyToken) => {
+    const numOfRequestedAlbums = 5;
+
+    const response = axios.get('https://api.spotify.com/v1/browse/new-releases', {
+        headers: {
+            'Authorization': 'Bearer ' + spotifyToken.access_token
+        },
+        params: {
+            limit: numOfRequestedAlbums
+        },
+    });
+
+    return response;
+};
+
 // TODO: querySpotify
 // TODO: getArtistData
 // TODO: getAlbumData
@@ -22,4 +41,5 @@ const getSpotifyAccessToken = async () => {
 // TODO: exports
 module.exports = {
     getSpotifyAccessToken,
+    getSpotifyFeaturedAlbums,
 }

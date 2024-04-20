@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("GET /api/music/getSpotifyAccessToken", () => {
-    it("Should return success code 00, cookie with Spotify token, and success message", async () => {
+    it("Should return success code 200, cookie with Spotify token, and success message", async () => {
         const res = await request(testServer)
             .get("/api/music/getSpotifyAccessToken");
 
@@ -22,6 +22,23 @@ describe("GET /api/music/getSpotifyAccessToken", () => {
         expect(res.statusCode).toBe(200);
         expect(cookies[0]).not.toBeNull();
         expect(res.body).toBe('Spotify access token acquired...');
+    })
+})
+
+describe("GET /api/music/getFeaturedAlbums", () => {
+    // SUCCESS
+    it("Should return success code 200, and data object with 5 new album releases", async () => {
+        await request(testServer)
+            .get("/api/music/getSpotifyAccessToken");
+
+        const res = await request(testServer)
+            .get("/api/music/getFeaturedAlbums");
+
+        const featuredAlbums = res.body.featuredAlbums;
+        console.log(featuredAlbums.albums.items);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('New album releases from Spotify API acquired...');
+        expect(featuredAlbums.albums.items.length).toBe(5);
     })
 })
 

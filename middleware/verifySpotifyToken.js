@@ -40,11 +40,11 @@ const verifySpotifyToken = async (req, res, next) => {
         httpOnly: true,
         secure: true,
         sameSite: 'none'
-    })
+    });
 
-    res.decodedSpotifyToken = decodedSpotifyCookie;
+    req.decodedSpotifyToken = decodedSpotifyCookie;
 
-    next()
+    next();
 };
 
 // Exports
