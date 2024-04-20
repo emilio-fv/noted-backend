@@ -1,9 +1,19 @@
-// TODO: imports
-// TODO: instantiate router
+// Imports
+const express = require('express');
+const {
+    handleGetSpotifyAccessToken,
+} = require('./music.handlers');
 
-// TODO: route GET /getSpotifyAccessToken
+// TODO: instantiate router
+const router = express.Router();
+
+// Music API endpoints
+router.get('/getSpotifyAccessToken', handleGetSpotifyAccessToken);
 // TODO: route POST /querySpotify
 // TODO: route GET /:artistId/getArtistData
 // TODO: route GET /:albumId/getAlbumData
 
-// TODO: export router
+// Exports
+module.exports = {
+    musicRouter: router
+};

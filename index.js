@@ -4,14 +4,16 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const process = require('node:process');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
 const { connectDb } = require('./config/mongoose.config');
 const { seedDb } = require('./seed');
 const { authRouter } = require('./api/auth/auth.routes');
-// TODO import music router
+const { musicRouter } = require('./api/music/music.routes');
 
+// Instantiate & configure server
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Define CORS origins
 const allowedOrigins = [
     'http://localhost:8000', // dev domain
     'https://noted-frontend-emilio-fv.vercel.app', // prod domain
@@ -43,7 +45,7 @@ app.use(helmet());
 
 // API endpoints
 app.use('/api/auth', authRouter);
-// TODO: Add music router
+app.use('/api/music', musicRouter); 
 
 // Entry API endpoint
 app.get('/', async (req, res) => {
