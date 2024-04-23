@@ -6,15 +6,15 @@ const {
 const {
     handleGetSpotifyAccessToken,
     handleGetSpotifyFeaturedAlbums,
+    handleQuerySpotify,
 } = require('./music.handlers');
 
-// TODO: instantiate router
 const router = express.Router();
 
 // Music API endpoints
 router.get('/getSpotifyAccessToken', handleGetSpotifyAccessToken);
 router.get('/getFeaturedAlbums', verifySpotifyToken, handleGetSpotifyFeaturedAlbums);
-// TODO: route POST /querySpotify
+router.get('/querySpotify', verifySpotifyToken, handleQuerySpotify);
 // TODO: route GET /:artistId/getArtistData
 // TODO: route GET /:albumId/getAlbumData
 
