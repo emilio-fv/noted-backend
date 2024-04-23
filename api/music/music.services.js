@@ -14,15 +14,10 @@ const getSpotifyAccessToken = async () => {
     return response;
 };
 
-/**
- * Requests top 5 newly released albums from Spotify API
- * @param {object} spotifyToken 
- * @returns 
- */
 const getSpotifyFeaturedAlbums = async (spotifyToken) => {
     const numOfRequestedAlbums = 5;
 
-    const response = axios.get('https://api.spotify.com/v1/browse/new-releases', {
+    const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', {
         headers: {
             'Authorization': 'Bearer ' + spotifyToken.access_token
         },
@@ -34,12 +29,27 @@ const getSpotifyFeaturedAlbums = async (spotifyToken) => {
     return response;
 };
 
-// TODO: querySpotify
+const querySpotify = async (spotifyToken, query) => {
+    const response = await axios.get('https://api.spotify.com/v1/search', {
+        headers: {
+            'Authorization': 'Bearer ' + spotifyToken.access_token
+        },
+        params: {
+            q: query,
+            type: 'artist,album,track',
+            limit: 12
+        }
+    });
+
+    return response;
+};
+
 // TODO: getArtistData
 // TODO: getAlbumData
 
-// TODO: exports
+// Exports
 module.exports = {
     getSpotifyAccessToken,
     getSpotifyFeaturedAlbums,
+    querySpotify,
 }

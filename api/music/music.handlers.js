@@ -1,7 +1,8 @@
-// TODO: imports 
+// Imports
 const {
     getSpotifyAccessToken,
     getSpotifyFeaturedAlbums,
+    querySpotify,
 } = require('./music.services');
 const logger = require('../../utils/logger.util');
 const { generateAccessToken } = require('../../utils/jwt.utils');
@@ -51,18 +52,31 @@ const handleGetSpotifyFeaturedAlbums = async (req, res) => {
     }
 };
 
-// TODO: handleQuerySpotify
-    // Logger
+const handleQuerySpotify = async (req, res) => {
+    logger.info('Querying Spotify database...');
+
+    try {
+        const response = await querySpotify(req.decodedSpotifyToken, req.query.spotifyQuery);
+
+        res.status(200)
+            .json({
+                message: 'Spotify query results acquired...',
+                results: response.data,
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
 
 // TODO: handleGetArtistsData
-    // Logger
-
 // TODO: handleGetAlbumsData
-    // Logger
 
-
-// TODO: exports
+// Exports
 module.exports = {
     handleGetSpotifyAccessToken,
-    handleGetSpotifyFeaturedAlbums
-}
+    handleGetSpotifyFeaturedAlbums,
+    handleQuerySpotify
+};

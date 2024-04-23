@@ -23,10 +23,9 @@ describe("GET /api/music/getSpotifyAccessToken", () => {
         expect(cookies[0]).not.toBeNull();
         expect(res.body).toBe('Spotify access token acquired...');
     })
-})
+});
 
 describe("GET /api/music/getFeaturedAlbums", () => {
-    // SUCCESS
     it("Should return success code 200, and data object with 5 new album releases", async () => {
         await request(testServer)
             .get("/api/music/getSpotifyAccessToken");
@@ -35,18 +34,29 @@ describe("GET /api/music/getFeaturedAlbums", () => {
             .get("/api/music/getFeaturedAlbums");
 
         const featuredAlbums = res.body.featuredAlbums;
-        console.log(featuredAlbums.albums.items);
+
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe('New album releases from Spotify API acquired...');
         expect(featuredAlbums.albums.items.length).toBe(5);
     })
-})
+});
 
-// TODO: test POST /api/music/querySpotify
-    // Failure
-        // Invalid query
-    // Success
-        // Valid query returns response
+describe("GET /api/music/querySpotify", () => {
+    it("Should return success code 200, and data object with 12 results for artists, albums, and tracks", async () => {
+        await request(testServer)
+            .get("/api/music/getSpotifyAccessToken");
+
+        const res = await request(testServer)
+            .get("/api/music/querySpotify?spotifyQuery=test");
+
+        const searchResults = res.body.results;
+
+        expect(res.statusCode).toBe(200);
+        expect(searchResults.artists.items.length).toBe(12);
+        expect(searchResults.albums.items.length).toBe(12);
+        expect(searchResults.tracks.items.length).toBe(12);
+    })
+});
 
 // TODO: test GET /api/music/:artistId/getArtistData
     // Failure
