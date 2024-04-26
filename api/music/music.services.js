@@ -37,7 +37,7 @@ const querySpotify = async (spotifyToken, query) => {
         params: {
             q: query,
             type: 'artist,album,track',
-            limit: 12
+            limit: 6
         }
     });
 
