@@ -3,6 +3,7 @@ const {
     getSpotifyAccessToken,
     getSpotifyFeaturedAlbums,
     querySpotify,
+    getArtistData,
 } = require('./music.services');
 const logger = require('../../utils/logger.util');
 const { generateAccessToken } = require('../../utils/jwt.utils');
@@ -11,9 +12,9 @@ const handleGetSpotifyAccessToken = async (req, res) => {
     logger.info('Requesting Spotify access token...');
 
     try {
-        const response = await getSpotifyAccessToken();
+        const spotifyResponse = await getSpotifyAccessToken();
 
-        const spotifyToken = await generateAccessToken(response.data);
+        const spotifyToken = await generateAccessToken(spotifyResponse.data);
 
         res.status(200)
             .cookie('spotifyToken', {
@@ -37,12 +38,12 @@ const handleGetSpotifyFeaturedAlbums = async (req, res) => {
     logger.info('Requesting featured albums from Spotify API...');
 
     try {
-        const response = await getSpotifyFeaturedAlbums(req.decodedSpotifyToken);
+        const spotifyResponse = await getSpotifyFeaturedAlbums(req.decodedSpotifyToken);
 
         res.status(200)
             .json({
                 message: 'New album releases from Spotify API acquired...',
-                featuredAlbums: response.data,
+                featuredAlbums: spotifyResponse.data,
             });
     } catch (errors) {
         logger.error(errors);
@@ -56,12 +57,12 @@ const handleQuerySpotify = async (req, res) => {
     logger.info('Querying Spotify database...');
 
     try {
-        const response = await querySpotify(req.decodedSpotifyToken, req.query.spotifyQuery);
+        const spotifyResponse = await querySpotify(req.decodedSpotifyToken, req.query.spotifyQuery);
 
         res.status(200)
             .json({
                 message: 'Spotify query results acquired...',
-                results: response.data,
+                results: spotifyResponse.data,
             })
     } catch (errors) {
         logger.error(errors);
@@ -71,12 +72,33 @@ const handleQuerySpotify = async (req, res) => {
     }
 };
 
-// TODO: handleGetArtistsData
+const handleGetArtistsData = async (req, res) => {
+    logger.info("Getting artist's data ...");
+
+    try {
+        const spotifyResponse = await getArtistData(req.decodedSpotifyToken, req.params.artistId);
+
+        // TODO: get review data
+
+        res.status(200)
+            .json({
+                message: 'Artist data acquired...',
+                artistData: spotifyResponse.data,
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+}
+
 // TODO: handleGetAlbumsData
 
 // Exports
 module.exports = {
     handleGetSpotifyAccessToken,
     handleGetSpotifyFeaturedAlbums,
-    handleQuerySpotify
+    handleQuerySpotify,
+    handleGetArtistsData,
 };
