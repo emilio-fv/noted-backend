@@ -35,9 +35,10 @@ const querySpotify = async (spotifyToken, query) => {
             'Authorization': 'Bearer ' + spotifyToken.access_token
         },
         params: {
-            q: query,
-            type: 'artist,album,track',
-            limit: 6
+            q: query.spotifyQuery,
+            type: query?.type ? query?.type : 'artist,album,track',
+            limit: 6,
+            offset: Number(query.offset),
         }
     });
 
