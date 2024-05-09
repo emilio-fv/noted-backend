@@ -7,6 +7,7 @@ const {
 } = require('./music.services');
 const logger = require('../../utils/logger.util');
 const { generateAccessToken } = require('../../utils/jwt.utils');
+const { parseSpotifyQueryResults } = require('../../utils/spotifyParsers.utils');
 
 const handleGetSpotifyAccessToken = async (req, res) => {
     logger.info('Requesting Spotify access token...');
@@ -57,12 +58,17 @@ const handleQuerySpotify = async (req, res) => {
     logger.info('Querying Spotify database...');
 
     try {
-        const spotifyResponse = await querySpotify(req.decodedSpotifyToken, req.query.spotifyQuery);
+        const spotifyResponse = await querySpotify(req.decodedSpotifyToken, req.query);
+
+        const parsedSpotifyResults = await parseSpotifyQueryResults(spotifyResponse.data);
 
         res.status(200)
             .json({
                 message: 'Spotify query results acquired...',
-                results: spotifyResponse.data,
+                results: parsedSpotifyResults,
+                offset: req.query.offset,
+                currentQuery: req.query.spotifyQuery,
+                type: req.query?.type,
             })
     } catch (errors) {
         logger.error(errors);
