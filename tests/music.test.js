@@ -47,14 +47,14 @@ describe("GET /api/music/querySpotify", () => {
             .get("/api/music/getSpotifyAccessToken");
 
         const res = await request(testServer)
-            .get("/api/music/querySpotify?spotifyQuery=test");
+            .get("/api/music/querySpotify?spotifyQuery=test&offset=0");
 
         const searchResults = res.body.results;
 
         expect(res.statusCode).toBe(200);
-        expect(searchResults.artists.items.length).toBe(6);
-        expect(searchResults.albums.items.length).toBe(6);
-        expect(searchResults.tracks.items.length).toBe(6);
+        expect(searchResults.artists.length).toBe(6);
+        expect(searchResults.albums.length).toBe(6);
+        expect(searchResults.tracks.length).toBe(6);
     })
 });
 
@@ -66,7 +66,7 @@ describe("GET /api/music/:artistId/getArtistData", () => {
         const res = await request(testServer)
             .get("/api/music/0TnOYISbd1XYRBk9myaseg/getArtistData");
 
-        const artistData = res.body.artistData;
+        // const artistData = res.body.artistData;
 
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe("Artist data acquired...");
@@ -74,8 +74,18 @@ describe("GET /api/music/:artistId/getArtistData", () => {
     })
 });
 
-// TODO: test GET /api/music/:albumId/getAlbumData
-    // Failure
-        // invalid or missing album id
-    // Success
-        // valid album id returns response
+describe("GET /api/music/:albumId/getAlbumData", () => {
+    it("Should return success code 200, and data object with 1 new album", async () => {
+        await request(testServer)
+            .get("/api/music/getSpotifyAccessToken");
+
+        const res = await request(testServer)
+            .get("/api/music/4aawyAB9vmqN3uQ7FjRGTy/getAlbumData");
+
+        // const albumData = res.body.albumData;
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe("Album data acquired...");
+        expect(res.body.albumData).not.toBeNull();
+    })
+});

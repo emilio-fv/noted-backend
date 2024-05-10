@@ -4,6 +4,7 @@ const {
     getSpotifyFeaturedAlbums,
     querySpotify,
     getArtistData,
+    getAlbumData,
 } = require('./music.services');
 const logger = require('../../utils/logger.util');
 const { generateAccessToken } = require('../../utils/jwt.utils');
@@ -85,6 +86,7 @@ const handleGetArtistsData = async (req, res) => {
         const spotifyResponse = await getArtistData(req.decodedSpotifyToken, req.params.artistId);
 
         // TODO: get review data
+        // TODO: parse through data
 
         res.status(200)
             .json({
@@ -97,9 +99,29 @@ const handleGetArtistsData = async (req, res) => {
         res.status(400)
             .json(errors);
     }
-}
+};
 
-// TODO: handleGetAlbumsData
+const handleGetAlbumsData = async (req, res) => {
+    logger.info("Getting album's data ...");
+
+    try {
+        const spotifyResponse = await getAlbumData(req.decodedSpotifyToken, req.params.albumId);
+
+        // TODO: get review data
+        // TODO: parse through data
+
+        res.status(200)
+            .json({
+                message: 'Album data acquired...',
+                albumData: spotifyResponse.data,
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
 
 // Exports
 module.exports = {
@@ -107,4 +129,5 @@ module.exports = {
     handleGetSpotifyFeaturedAlbums,
     handleQuerySpotify,
     handleGetArtistsData,
+    handleGetAlbumsData
 };
