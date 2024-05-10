@@ -17,8 +17,8 @@ const router = express.Router();
 router.get('/getSpotifyAccessToken', handleGetSpotifyAccessToken);
 router.get('/getFeaturedAlbums', verifySpotifyToken, handleGetSpotifyFeaturedAlbums);
 router.get('/querySpotify', verifySpotifyToken, handleQuerySpotify);
-router.get('/:artistId/getArtistData', verifySpotifyToken, handleGetArtistsData);
-router.get('/:albumId/getAlbumData', verifySpotifyToken, handleGetAlbumsData);
+router.get('/:artistId/getArtistsData', verifySpotifyToken, handleGetArtistsData);
+router.get('/:albumId/getAlbumsData', verifySpotifyToken, handleGetAlbumsData);
 
 // Exports
 module.exports = {
