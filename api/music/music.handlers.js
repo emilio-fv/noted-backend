@@ -85,7 +85,6 @@ const handleGetArtistsData = async (req, res) => {
     try {
         const spotifyResponse = await getArtistData(req.decodedSpotifyToken, req.params.artistId);
 
-        // TODO: get review data
         // TODO: parse through data
 
         res.status(200)
@@ -107,7 +106,6 @@ const handleGetAlbumsData = async (req, res) => {
     try {
         const spotifyResponse = await getAlbumData(req.decodedSpotifyToken, req.params.albumId);
 
-        // TODO: get review data
         // TODO: parse through data
 
         res.status(200)
