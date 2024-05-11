@@ -78,6 +78,16 @@ const getAlbumData = async (spotifyToken, albumId) => {
     return response;
 }
 
+const getAlbumTracklistData = async (spotifyToken, albumId) => {
+    const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, {
+        headers: {
+            'Authorization': 'Bearer ' + spotifyToken.access_token
+        },
+    });
+
+    return response;
+}
+
 // Exports
 module.exports = {
     getSpotifyAccessToken,
@@ -86,4 +96,5 @@ module.exports = {
     getArtistData,
     getArtistsDiscographyData,
     getAlbumData,
+    getAlbumTracklistData
 }

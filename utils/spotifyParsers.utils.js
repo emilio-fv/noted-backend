@@ -64,8 +64,8 @@ const parseArtistsData = async (artistData, discography) => {
         discography: []
     };
 
-    parsedArtistData.name = artistData.name;
     parsedArtistData.id = artistData.id;
+    parsedArtistData.name = artistData.name;
     parsedArtistData.images = artistData.images;
 
     for (let album of discography.items) {
@@ -79,8 +79,37 @@ const parseArtistsData = async (artistData, discography) => {
     return parsedArtistData;
 }
 
+const parseAlbumData = async (albumData, tracklist) => {
+    let parsedAlbumData = {
+        id: null,
+        name: null,
+        artist: null,
+        images: null,
+        tracks: [],
+    };
+
+    parsedAlbumData.id = albumData.id;
+    parsedAlbumData.name = albumData.name;
+    parsedAlbumData.images = albumData.images;
+    parsedAlbumData.artist = {
+        id: albumData.artists[0].id,
+        name: albumData.artists[0].name
+        
+    };
+
+    for (let track of tracklist.items) {
+        parsedAlbumData.tracks.push({
+            trackNumber: track.track_number,
+            name: track.name
+        })
+    }
+
+    return parsedAlbumData;
+}
+
 // Exports
 module.exports = {
     parseSpotifyQueryResults,
-    parseArtistsData
+    parseArtistsData,
+    parseAlbumData
 }
