@@ -6,10 +6,11 @@ const {
     getArtistData,
     getAlbumData,
     getArtistsDiscographyData,
+    getAlbumTracklistData,
 } = require('./music.services');
 const logger = require('../../utils/logger.util');
 const { generateAccessToken } = require('../../utils/jwt.utils');
-const { parseSpotifyQueryResults, parseArtistsData } = require('../../utils/spotifyParsers.utils');
+const { parseSpotifyQueryResults, parseArtistsData, parseAlbumData } = require('../../utils/spotifyParsers.utils');
 
 const handleGetSpotifyAccessToken = async (req, res) => {
     logger.info('Requesting Spotify access token...');
@@ -84,10 +85,10 @@ const handleGetArtistsData = async (req, res) => {
     logger.info("Getting artist's data ...");
 
     try {
-        // Fetches artist data (name, id, images)
+        // Fetch artist data
         const spotifyArtistData = await getArtistData(req.decodedSpotifyToken, req.params.artistId);
 
-        // Fetches artist's discography
+        // Fetch artist's discography
         const spotifyArtistDiscographyData = await getArtistsDiscographyData(req.decodedSpotifyToken, req.params.artistId);
 
         // Parse through data to configure for frontend client
@@ -110,14 +111,19 @@ const handleGetAlbumsData = async (req, res) => {
     logger.info("Getting album's data ...");
 
     try {
-        const spotifyResponse = await getAlbumData(req.decodedSpotifyToken, req.params.albumId);
+        // Fetch album data
+        const spotifyAlbumData = await getAlbumData(req.decodedSpotifyToken, req.params.albumId);
 
-        // TODO: parse through data
+        // Fetch tracklist for album
+        const spotifyAlbumTracklistData = await getAlbumTracklistData(req.decodedSpotifyToken, req.params.albumId);
+
+        // Parse through data to configure for frontend client
+        const albumSpotifyData = await parseAlbumData(spotifyAlbumData.data, spotifyAlbumTracklistData.data)
 
         res.status(200)
             .json({
                 message: 'Album data acquired...',
-                albumData: spotifyResponse.data,
+                albumData: albumSpotifyData,
             })
     } catch (errors) {
         logger.error(errors);
