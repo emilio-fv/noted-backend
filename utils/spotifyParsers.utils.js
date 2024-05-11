@@ -55,7 +55,32 @@ const parseSpotifyQueryResults = async (payload) => {
     return parsedPayload;
 };
 
+
+const parseArtistsData = async (artistData, discography) => {
+    let parsedArtistData = {
+        id: null,
+        name: null,
+        images: null,
+        discography: []
+    };
+
+    parsedArtistData.name = artistData.name;
+    parsedArtistData.id = artistData.id;
+    parsedArtistData.images = artistData.images;
+
+    for (let album of discography.items) {
+        parsedArtistData.discography.push({
+            id: album.id,
+            name: album.name,
+            images: album.images,
+        })
+    }
+
+    return parsedArtistData;
+}
+
 // Exports
 module.exports = {
     parseSpotifyQueryResults,
+    parseArtistsData
 }

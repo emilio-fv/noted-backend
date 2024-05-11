@@ -5,10 +5,11 @@ const {
     querySpotify,
     getArtistData,
     getAlbumData,
+    getArtistsDiscographyData,
 } = require('./music.services');
 const logger = require('../../utils/logger.util');
 const { generateAccessToken } = require('../../utils/jwt.utils');
-const { parseSpotifyQueryResults } = require('../../utils/spotifyParsers.utils');
+const { parseSpotifyQueryResults, parseArtistsData } = require('../../utils/spotifyParsers.utils');
 
 const handleGetSpotifyAccessToken = async (req, res) => {
     logger.info('Requesting Spotify access token...');
@@ -83,14 +84,19 @@ const handleGetArtistsData = async (req, res) => {
     logger.info("Getting artist's data ...");
 
     try {
-        const spotifyResponse = await getArtistData(req.decodedSpotifyToken, req.params.artistId);
+        // Fetches artist data (name, id, images)
+        const spotifyArtistData = await getArtistData(req.decodedSpotifyToken, req.params.artistId);
 
-        // TODO: parse through data
+        // Fetches artist's discography
+        const spotifyArtistDiscographyData = await getArtistsDiscographyData(req.decodedSpotifyToken, req.params.artistId);
+
+        // Parse through data to configure for frontend client
+        const artistsSpotifyData = await parseArtistsData(spotifyArtistData.data, spotifyArtistDiscographyData.data);
 
         res.status(200)
             .json({
                 message: 'Artist data acquired...',
-                artistData: spotifyResponse.data,
+                artistData: artistsSpotifyData,
             })
     } catch (errors) {
         logger.error(errors);
