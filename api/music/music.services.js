@@ -53,7 +53,21 @@ const getArtistData = async (spotifyToken, artistId) => {
     });
 
     return response;
+};
+
+const getArtistsDiscographyData = async (spotifyToken, artistId) => {
+    const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/albums`, {
+        headers: {
+            'Authorization': 'Bearer ' + spotifyToken.access_token
+        },
+        params: {
+            include_groups: 'album'
+        }
+    });
+
+    return response;
 }
+
 const getAlbumData = async (spotifyToken, albumId) => {
     const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, {
         headers: {
@@ -70,5 +84,6 @@ module.exports = {
     getSpotifyFeaturedAlbums,
     querySpotify,
     getArtistData,
+    getArtistsDiscographyData,
     getAlbumData,
 }
