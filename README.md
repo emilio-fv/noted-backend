@@ -1,6 +1,6 @@
 # Noted Backend
 
-Recent Updates
+Current features:
 * Auth API
     - Register user
     - Login user
