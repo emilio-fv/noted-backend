@@ -1,8 +1,9 @@
 // Imports
 const { verifyAccessToken } = require('../utils/jwt.utils');
+const logger = require('../utils/logger.util');
 
 const authorization = async (req, res, next) => {
-    // TODO log middleware
+    logger.info('Authorizing request...');
     const { accessToken } = req.cookies;
 
     if (!accessToken) {
@@ -21,5 +22,5 @@ const authorization = async (req, res, next) => {
 
 // Exports
 module.exports = {
-    authorization,
+    authorization
 };

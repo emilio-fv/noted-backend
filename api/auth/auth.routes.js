@@ -11,7 +11,7 @@ const { authorization } = require('../../middleware/authorization');
 
 const router = express.Router();
 
-// API endpoints
+// Auth API endpoints
 router.post('/register', handleRegister);
 router.post('/login', handleLogin);
 router.post('/logout', handleLogout);
