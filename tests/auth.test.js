@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../index");
 const { seedDb } = require("../seed");
-const { verifyAccessToken, verifyRefreshToken, generateExpiredAccessToken, generateExpiredRefreshToken, generateRefreshToken } = require("../utils/jwt.utils");
+const { 
+    verifyAccessToken, 
+    verifyRefreshToken, 
+    generateExpiredAccessToken, 
+    generateExpiredRefreshToken, 
+    generateRefreshToken 
+} = require("../utils/jwt.utils");
 
 let testServer;
 
@@ -13,12 +19,12 @@ beforeAll(async () => {
         console.log('Test db connected')
     })
     await seedDb();
-})
+});
 
 afterAll(() => {
     mongoose.disconnect();
     testServer.close();
-})
+});
 
 describe("POST /api/auth/register", () => {
     it("Should return error code 400 & messages for missing required fields", async () => {

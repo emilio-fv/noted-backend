@@ -19,7 +19,6 @@ const seedDb = async () => {
             return res;
         });
 
-        console.log(newUsers);
         // TODO: add reviews
 
         // TODO Create relationships
