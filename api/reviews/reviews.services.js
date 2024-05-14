@@ -7,7 +7,7 @@ const createReview = async (reviewData) => {
     const newReview = await Review.create(reviewData);
 
     // Update user's reviews field
-    await User.findByIdAndUpdate(reviewData.author, {
+    const updatedUser = await User.findByIdAndUpdate(reviewData.author, {
         $push: { reviews: newReview._id }}
     );
 

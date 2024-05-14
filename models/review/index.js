@@ -16,6 +16,10 @@ const spotifyImageSchema = new Schema({
 
 // Review schema
 const reviewSchema = new Schema({
+    date: {
+      type: Date,
+      required: true,
+    },
     artist: {
       type: String,
       required: true,

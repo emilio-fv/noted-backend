@@ -16,7 +16,7 @@ const handleCreateReview = async (req, res) => {
         res.status(200)
             .json({
                 message: 'Review successfully created',
-                reviewData: response.data,
+                reviewData: response,
             })
     } catch (errors) {
         logger.error(errors);
