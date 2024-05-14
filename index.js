@@ -8,6 +8,7 @@ const { connectDb } = require('./config/mongoose.config');
 const { seedDb } = require('./seed');
 const { authRouter } = require('./api/auth/auth.routes');
 const { musicRouter } = require('./api/music/music.routes');
+const { reviewsRouter } = require('./api/reviews/reviews.routes');
 
 // Instantiate & configure server
 const app = express();
@@ -45,7 +46,8 @@ app.use(helmet());
 
 // API endpoints
 app.use('/api/auth', authRouter);
-app.use('/api/music', musicRouter); 
+app.use('/api/music', musicRouter);
+app.use('/api/reviews', reviewsRouter);
 
 // Entry API endpoint
 app.get('/', async (req, res) => {

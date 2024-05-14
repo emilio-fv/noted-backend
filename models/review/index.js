@@ -2,6 +2,18 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const spotifyImageSchema = new Schema({
+    url: {
+      type: String,
+    },
+    height: {
+      type: Number,
+    },
+    width: {
+      type: Number,
+    },
+});
+
 // Review schema
 const reviewSchema = new Schema({
     artist: {
@@ -20,29 +32,29 @@ const reviewSchema = new Schema({
       type: String,
       required: true
     },
-    src: {
-      type: String,
+    albumImages: {
+      type: [spotifyImageSchema],
       required: true
     }, 
     rating: {
       type: Number,
     },
-    text: {
+    reviewText: {
       type: String,
     },
     favorite: {
       type: Boolean,
       default: false
     },
-    user: {
+    author: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
-    likes: [{
-      types: Schema.Types.ObjectId,
-      ref: 'User'
-    }],
+    // likes: [{
+    //   types: Schema.Types.ObjectId,
+    //   ref: 'User'
+    // }],
 }, { timestamps: true, collection: 'reviews' });
 
 // Generate review model
