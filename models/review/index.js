@@ -14,6 +14,17 @@ const spotifyImageSchema = new Schema({
     },
 });
 
+const authorDataSchema = new Schema({
+    userId: { 
+        type: Schema.Types.ObjectId, 
+        required: true 
+    },
+    username: { 
+        type: String, 
+        required: true 
+    }
+}, { _id: false });
+
 // Review schema
 const reviewSchema = new Schema({
     date: {
@@ -51,18 +62,13 @@ const reviewSchema = new Schema({
       default: false
     },
     author: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type: authorDataSchema,
       required: true
     },
-    // likes: [{
-    //   types: Schema.Types.ObjectId,
-    //   ref: 'User'
-    // }],
 }, { timestamps: true, collection: 'reviews' });
 
 // Generate review model
-const Review = mongoose.model("Review", reviewSchema);
+const Review = mongoose.model('Review', reviewSchema);
 
 // Exports
 module.exports = {
