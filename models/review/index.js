@@ -28,7 +28,7 @@ const authorDataSchema = new Schema({
 // Review schema
 const reviewSchema = new Schema({
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     artist: {
