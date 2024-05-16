@@ -121,9 +121,7 @@ describe("GET /api/reviews/loggedInUser", () => {
 
 describe("DELETE api/reviews/delete", () => {
     it("Should return status code 200 and message 'Review successfully deleted'", async () => {
-        // Login in
-        // Extract cookie
-        // Create review
+
         const loginRes = await request(testServer)
         .post("/api/auth/login")
         .send({
@@ -164,11 +162,11 @@ describe("DELETE api/reviews/delete", () => {
             date: 'Mon, 13 May 2024 20:20:10 +0000',
         });
 
-        const reviewId = createReviewRes.body.reviewData.id;
+        const reviewId = createReviewRes.body.reviewData._id;
 
         // Delete review
         const res = await request(testServer)
-            .delete(`/api/reviews/${reviewId}`)
+            .delete(`/api/reviews/${reviewId}/delete`)
             .set("Cookie", cookies)
             .send();
 

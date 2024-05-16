@@ -17,8 +17,22 @@ const getLoggedInUsersReviews = async (userId) => {
     return reviews;
 };
 
+const getReviewById = async (reviewId) => {
+    const foundReview = await Review.findById(reviewId);
+
+    return foundReview;
+};
+
+const deleteReviewById = async (reviewId) => {
+    const deletedReview = await Review.deleteOne({ id: reviewId });
+
+    return deletedReview
+}
+
 // Exports
 module.exports = {
     createReview,
     getLoggedInUsersReviews,
+    getReviewById,
+    deleteReviewById,
 };
