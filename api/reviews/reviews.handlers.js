@@ -5,7 +5,9 @@ const {
  } = require('../auth/auth.services');
 const { 
     createReview, 
-    getLoggedInUsersReviews
+    getLoggedInUsersReviews,
+    getReviewById,
+    deleteReviewById
 } = require('./reviews.services');
 
 const handleCreateReview = async (req, res) => {
@@ -58,9 +60,49 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
         res.status(400)
             .json(errors);
     }
-}
+};
+
+// TODO create request handler delete endpoint
+const handleDeleteReview = async (req, res) => {
+    logger.info("Deleting review");
+
+    try {
+        const { reviewId } = req.params;
+        const decodedCookie = req.decoded;
+
+        const foundReview = await getReviewById(reviewId);
+
+        console.log(foundReview);
+
+        if (foundReview.author.userId != decodedCookie.userId) {
+            res.status(401)
+                .json({
+                    message: 'User unauthorized to manage resource'
+                })
+        } 
+
+        await deleteReviewById(reviewId);
+
+        res.status(200)
+            .json({
+                message: 'Review successfully deleted'
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+    // Call deleteReview service function
+
+    // Return status 200 and message 'Review has been deleted'
+
+    // Return errors
+
 // Exports
 module.exports = {
     handleCreateReview,
-    handleGetLoggedInUsersReviews
+    handleGetLoggedInUsersReviews,
+    handleDeleteReview
 }
