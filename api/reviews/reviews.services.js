@@ -3,14 +3,7 @@ const { Review } = require('../../models/review');
 
 const createReview = async (reviewData) => {
     // Create review
-    const newReview = await Review.create({
-        ...reviewData,
-        albumImages: [
-            { url: 'test', height: '300', width:'300' },
-            { url: 'test', height: '300', width:'300' },
-            { url: 'test', height: '300', width:'300' },
-        ],
-    });
+    const newReview = await Review.create(reviewData);
 
     // Return new review
     return newReview;
@@ -18,7 +11,7 @@ const createReview = async (reviewData) => {
 
 const getLoggedInUsersReviews = async (userId) => {
     // Query database
-    const reviews = await Review.find({ 'author.userId': userId });
+    const reviews = await Review.find({ 'author.userId': userId }).sort({ createdAt: -1 });
 
     // Return reviews
     return reviews;
