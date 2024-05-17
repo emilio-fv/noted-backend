@@ -8,7 +8,8 @@ const {
     getLoggedInUsersReviews,
     getReviewById,
     deleteReviewById,
-    updateReviewById
+    updateReviewById,
+    getReviewsByAlbumId
 } = require('./reviews.services');
 
 const handleCreateReview = async (req, res) => {
@@ -29,6 +30,7 @@ const handleCreateReview = async (req, res) => {
 
         const response = await createReview(reviewData);
 
+        
         res.status(200)
             .json({
                 message: 'Review successfully created',
@@ -63,7 +65,27 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
     }
 };
 
-// TODO update review 
+const handleGetReviewsByAlbumId = async (req, res) => {
+    logger.info('Getting reviews by album id');
+
+    try {
+        const { albumId } = req.params;
+
+        const response = await getReviewsByAlbumId(albumId);
+
+        res.status(200)
+            .json({
+                message: 'Reviews by album id successfully fetched',
+                reviewData: response
+            });
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
 const handleUpdateReview = async (req, res) => {
     logger.info('Updating review');
 
@@ -93,7 +115,7 @@ const handleUpdateReview = async (req, res) => {
         res.status(400)
             .json(errors);
     }
-}
+};
 
 const handleDeleteReview = async (req, res) => {
     logger.info("Deleting review");
@@ -129,6 +151,7 @@ const handleDeleteReview = async (req, res) => {
 module.exports = {
     handleCreateReview,
     handleGetLoggedInUsersReviews,
+    handleGetReviewsByAlbumId,
     handleUpdateReview,
     handleDeleteReview
 }
