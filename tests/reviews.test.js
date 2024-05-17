@@ -167,7 +167,7 @@ describe("GET /api/reviews/:albumId/album", () => {
 
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe('Reviews by album id successfully fetched');
-        expect(res.body.reviewData.length).toBeGreaterThan(0);
+        expect(res.body.reviewsData.length).toBeGreaterThan(0);
     })
 })
 

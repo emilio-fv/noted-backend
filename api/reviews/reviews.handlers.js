@@ -76,7 +76,7 @@ const handleGetReviewsByAlbumId = async (req, res) => {
         res.status(200)
             .json({
                 message: 'Reviews by album id successfully fetched',
-                reviewData: response
+                reviewsData: response
             });
     } catch (errors) {
         logger.error(errors);
