@@ -23,13 +23,14 @@ const getReviewById = async (reviewId) => {
     return foundReview;
 };
 
+const getReviewsByAlbumId = async (albumId) => {
+    const foundReviews = await Review.find({ albumId: albumId });
+
+    return foundReviews;
+};
+
 const updateReviewById = async (reviewId, reviewData) => {
-    console.log(reviewId, reviewData);
-
     const updatedReview = await Review.findByIdAndUpdate(reviewId, reviewData, { new: true });
-
-    // TODO remove before pushing
-    console.log(updatedReview);
 
     return updatedReview;
 };
@@ -45,6 +46,7 @@ module.exports = {
     createReview,
     getLoggedInUsersReviews,
     getReviewById,
+    getReviewsByAlbumId,
     updateReviewById,
     deleteReviewById,
 };
