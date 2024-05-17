@@ -7,7 +7,8 @@ const {
     createReview, 
     getLoggedInUsersReviews,
     getReviewById,
-    deleteReviewById
+    deleteReviewById,
+    updateReviewById
 } = require('./reviews.services');
 
 const handleCreateReview = async (req, res) => {
@@ -62,7 +63,38 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
     }
 };
 
-// TODO create request handler delete endpoint
+// TODO update review 
+const handleUpdateReview = async (req, res) => {
+    logger.info('Updating review');
+
+    try {
+        const { reviewId } = req.params;
+        const decodedCookie = req.decoded;
+
+        const foundReview = await getReviewById(reviewId);
+
+        if (foundReview.author.userId != decodedCookie.userId) {
+            res.status(401)
+                .json({
+                    message: 'User unauthorized to manage resource'
+                })
+        }
+
+        const updatedReview = await updateReviewById(reviewId, req.body);
+
+        res.status(200)
+            .json({
+                message: 'Review successfully updated',
+                updatedReview: updatedReview
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+}
+
 const handleDeleteReview = async (req, res) => {
     logger.info("Deleting review");
 
@@ -97,5 +129,6 @@ const handleDeleteReview = async (req, res) => {
 module.exports = {
     handleCreateReview,
     handleGetLoggedInUsersReviews,
+    handleUpdateReview,
     handleDeleteReview
 }

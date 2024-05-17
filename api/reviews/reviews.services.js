@@ -23,16 +23,28 @@ const getReviewById = async (reviewId) => {
     return foundReview;
 };
 
+const updateReviewById = async (reviewId, reviewData) => {
+    console.log(reviewId, reviewData);
+
+    const updatedReview = await Review.findByIdAndUpdate(reviewId, reviewData, { new: true });
+
+    // TODO remove before pushing
+    console.log(updatedReview);
+
+    return updatedReview;
+};
+
 const deleteReviewById = async (reviewId) => {
     const deletedReview = await Review.deleteOne({ _id: reviewId });
 
     return deletedReview
-}
+};
 
 // Exports
 module.exports = {
     createReview,
     getLoggedInUsersReviews,
     getReviewById,
+    updateReviewById,
     deleteReviewById,
 };

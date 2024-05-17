@@ -4,7 +4,8 @@ const { authorization } = require('../../middleware/authorization');
 const { 
     handleCreateReview, 
     handleGetLoggedInUsersReviews,
-    handleDeleteReview
+    handleDeleteReview,
+    handleUpdateReview
 } = require('./reviews.handlers');
 
 const router = express.Router();
@@ -13,6 +14,7 @@ const router = express.Router();
 router.post('/createReview', authorization, handleCreateReview);
 router.get('/loggedInUser', authorization, handleGetLoggedInUsersReviews);
 router.delete('/:reviewId/delete', authorization, handleDeleteReview);
+router.put('/:reviewId/update', authorization, handleUpdateReview);
 
 // Exports
 module.exports = {
