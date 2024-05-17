@@ -24,7 +24,7 @@ const getReviewById = async (reviewId) => {
 };
 
 const deleteReviewById = async (reviewId) => {
-    const deletedReview = await Review.deleteOne({ id: reviewId });
+    const deletedReview = await Review.deleteOne({ _id: reviewId });
 
     return deletedReview
 }
