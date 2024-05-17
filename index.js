@@ -35,7 +35,7 @@ app.use(cors({
         return callback(null, true);
       },
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
-    methods: ['POST', 'PUT', 'GET'],
+    methods: ['POST', 'PUT', 'GET', 'DELETE'],
     credentials: true,
     exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
 }));
