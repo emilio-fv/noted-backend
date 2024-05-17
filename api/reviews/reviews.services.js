@@ -24,6 +24,8 @@ const getReviewById = async (reviewId) => {
 };
 
 const updateReviewById = async (reviewId, reviewData) => {
+    console.log(reviewId, reviewData);
+
     const updatedReview = await Review.findByIdAndUpdate(reviewId, reviewData, { new: true });
 
     // TODO remove before pushing
