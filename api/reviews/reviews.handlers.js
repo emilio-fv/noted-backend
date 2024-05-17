@@ -72,8 +72,6 @@ const handleDeleteReview = async (req, res) => {
 
         const foundReview = await getReviewById(reviewId);
 
-        console.log(foundReview);
-
         if (foundReview.author.userId != decodedCookie.userId) {
             res.status(401)
                 .json({
@@ -94,11 +92,6 @@ const handleDeleteReview = async (req, res) => {
             .json(errors);
     }
 };
-    // Call deleteReview service function
-
-    // Return status 200 and message 'Review has been deleted'
-
-    // Return errors
 
 // Exports
 module.exports = {
