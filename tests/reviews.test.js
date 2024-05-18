@@ -171,6 +171,57 @@ describe("GET /api/reviews/:albumId/album", () => {
     })
 })
 
+describe("GET /api/reviews/:artistId/artist", () => {
+    it("Should return status code 200, the message 'Reviews by artist id successfully fetched', and an array of reviews", async () => {
+        const loginRes = await request(testServer)
+        .post("/api/auth/login")
+        .send({
+            email: 'test@test.com',
+            password: 'password'
+        });
+
+        const cookies = loginRes.header['set-cookie'];
+
+        const createReviewRes = await request(testServer)
+        .post("/api/reviews/createReview")
+        .set("Cookie", cookies)
+        .send({
+            artist: 'Pitbull',
+            artistId: '0TnOYISbd1XYRBk9myaseg',
+            album: 'Global Warming',
+            albumId: '4aawyAB9vmqN3uQ7FjRGTy',
+            albumImages: [
+                {
+                    "url": "https://i.scdn.co/image/ab67616d0000b2732c5b24ecfa39523a75c993c4",
+                    "height": 640,
+                    "width": 640
+                    },
+                    {
+                    "url": "https://i.scdn.co/image/ab67616d00001e022c5b24ecfa39523a75c993c4",
+                    "height": 300,
+                    "width": 300
+                    },
+                    {
+                    "url": "https://i.scdn.co/image/ab67616d000048512c5b24ecfa39523a75c993c4",
+                    "height": 64,
+                    "width": 64
+                    }
+            ],
+            rating: 1,
+            reviewText: "I've never listened to this album. This is a test",
+            favorite: true,
+            date: 'Mon, 13 May 2024 20:20:10 +0000',
+        });
+
+        const res = await request(testServer)
+            .get(`/api/reviews/${createReviewRes.body.reviewData.artistId}/artist`)
+            .set("Cookie", cookies)
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('Reviews by artist id successfully fetched');
+        expect(res.body.reviewsData.length).toBeGreaterThan(0);
+    })
+})
 
 describe("DELETE /api/reviews/:reviewId/delete", () => {
     it("Should return status code 200 and message 'Review successfully deleted'", async () => {

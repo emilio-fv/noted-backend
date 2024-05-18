@@ -9,7 +9,8 @@ const {
     getReviewById,
     deleteReviewById,
     updateReviewById,
-    getReviewsByAlbumId
+    getReviewsByAlbumId,
+    getReviewsByArtistId
 } = require('./reviews.services');
 
 const handleCreateReview = async (req, res) => {
@@ -86,6 +87,27 @@ const handleGetReviewsByAlbumId = async (req, res) => {
     }
 };
 
+const handleGetReviewsByArtistId = async (req, res) => {
+    logger.info('Getting reviews by artist id');
+
+    try {
+        const { artistId } = req.params;
+
+        const response = await getReviewsByArtistId(artistId);
+
+        res.status(200)
+            .json({
+                message: 'Reviews by artist id successfully fetched',
+                reviewsData: response
+            });
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
 const handleUpdateReview = async (req, res) => {
     logger.info('Updating review');
 
@@ -152,6 +174,7 @@ module.exports = {
     handleCreateReview,
     handleGetLoggedInUsersReviews,
     handleGetReviewsByAlbumId,
+    handleGetReviewsByArtistId,
     handleUpdateReview,
     handleDeleteReview
 }
