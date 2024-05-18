@@ -29,6 +29,12 @@ const getReviewsByAlbumId = async (albumId) => {
     return foundReviews;
 };
 
+const getReviewsByArtistId = async (artistId) => {
+    const foundReviews = await Review.find({ artistId: artistId });
+
+    return foundReviews;
+};
+
 const updateReviewById = async (reviewId, reviewData) => {
     const updatedReview = await Review.findByIdAndUpdate(reviewId, reviewData, { new: true });
 
@@ -47,6 +53,7 @@ module.exports = {
     getLoggedInUsersReviews,
     getReviewById,
     getReviewsByAlbumId,
+    getReviewsByArtistId,
     updateReviewById,
     deleteReviewById,
 };
