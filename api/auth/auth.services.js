@@ -20,8 +20,8 @@ const getUserByUsername = async (username) => {
 };
 
 // Get user by id
-const getUserById = async (id) => {
-    const foundUser = await User.findById(id);
+const getUserById = async (userId) => {
+    const foundUser = await User.findById(userId);
     return foundUser;
 }
 

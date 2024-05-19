@@ -33,26 +33,10 @@ const userSchema = Schema({
         required: [true, 'Password required.'],
         minLength: [8, 'Password must be at least 8 characters.']
     },
-    reviews: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Review'
-    }],
-    favorites: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Review'
-    }],
-    following: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    followers: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
 }, 
 { 
     timestamps: true, 
-    collection: 'users',
+    // collection: 'users',
 });
 
 // Handle confirm password field
@@ -60,7 +44,7 @@ userSchema.virtual('confirmPassword')
     .get(() => this._confirmPassword)
     .set(value => this._confirmPassword = value);
 
-// Validate confirm password field
+// Validate confirmPassword field
 userSchema.pre('validate', function(next) {
     if (this.password !== this.confirmPassword) {
         this.invalidate('confirmPassword', 'Passwords must match.')
@@ -70,8 +54,6 @@ userSchema.pre('validate', function(next) {
 
 // Hash password
 userSchema.pre('save', async function save(next) {
-    // if (!this.isModified('password')) return next();
-
     try {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(this.password, salt);
