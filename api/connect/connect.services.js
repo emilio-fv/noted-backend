@@ -9,7 +9,9 @@ const getUsersByQuery = async (searchQuery) => {
             { username: { $regex: regex } },
             { email: { $regex: regex } },
         ]
-    });
+    },
+        'username'
+    );
 
     return foundUsers;
 }
