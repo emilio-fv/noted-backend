@@ -15,6 +15,7 @@ const handleQueryUsers = async (req, res) => {
         res.status(200)
             .json({
                 message: 'User database queried',
+                currentQuery: searchQuery,
                 results: response
             })
     } catch (errors) {
