@@ -3,6 +3,45 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { Schema } = mongoose;
 
+// Spotify image schema
+const spotifyImageSchema = new Schema({
+    url: {
+      type: String,
+    },
+    height: {
+      type: Number,
+    },
+    width: {
+      type: Number,
+    },
+});
+
+// Favorites schema
+const favoriteSchema = Schema({
+    artist: {
+        type: String,
+        required: true,
+      },
+      artistId: {
+        type: String,
+        required: true
+      },
+      album: {
+        type: String, 
+        required: true
+      },
+      albumId: {
+        type: String,
+        required: true
+      },
+      rating: {
+        type: Number,
+      },
+      albumImages: {
+        type: [spotifyImageSchema]
+      }
+});
+
 // User schema
 const userSchema = Schema({
     firstName: {
@@ -33,6 +72,9 @@ const userSchema = Schema({
         required: [true, 'Password required.'],
         minLength: [8, 'Password must be at least 8 characters.']
     },
+    favorites: {
+        type: [favoriteSchema]
+    }
 }, 
 { 
     timestamps: true, 
