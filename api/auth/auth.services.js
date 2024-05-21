@@ -31,6 +31,24 @@ const getAllUsers = async () => {
     return allUsers;
 };
 
+const addFavoriteToUserProfile = async (userId, reviewData) => {
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: { favorites: reviewData }}
+    )
+
+    return updatedUser;
+};
+
+const removeFavoriteFromUserProfile = async (userId, reviewId) => {
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { favorites: { _id: reviewId } }}
+    )
+
+    return updatedUser;
+};
+
 // Exports
 module.exports = {
     createUser,
@@ -38,4 +56,6 @@ module.exports = {
     getUserByUsername,
     getUserById,
     getAllUsers,
+    addFavoriteToUserProfile,
+    removeFavoriteFromUserProfile
 };

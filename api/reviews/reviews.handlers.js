@@ -1,7 +1,9 @@
 // Imports
 const logger = require('../../utils/logger.util');
 const { 
-    getUserById
+    getUserById,
+    addFavoriteToUserProfile,
+    removeFavoriteFromUserProfile
  } = require('../auth/auth.services');
 const { 
     createReview, 
@@ -17,6 +19,8 @@ const handleCreateReview = async (req, res) => {
     logger.info('Creating review...');
 
     try {
+        console.log(req.body);
+
         const decodedToken = req.decoded;
 
         const authorData = await getUserById(decodedToken.userId);
@@ -29,9 +33,20 @@ const handleCreateReview = async (req, res) => {
             }
         };
 
+        // Add to favorites if needed
+        if (reviewData.favorite) {
+            await addFavoriteToUserProfile(decodedToken.userId, { 
+                artist: reviewData.artist,
+                artistId: reviewData.artistId,
+                album: reviewData.album,
+                albumId: reviewData.albumId,
+                rating: reviewData.rating,
+                albumImages: reviewData.albumImages
+            })
+        }
+
         const response = await createReview(reviewData);
 
-        
         res.status(200)
             .json({
                 message: 'Review successfully created',
@@ -65,6 +80,10 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
             .json(errors);
     }
 };
+
+// const handleGetReviewsByUserId = async (req res) => {
+
+// };
 
 const handleGetReviewsByAlbumId = async (req, res) => {
     logger.info('Getting reviews by album id');
@@ -122,6 +141,11 @@ const handleUpdateReview = async (req, res) => {
                 .json({
                     message: 'User unauthorized to manage resource'
                 })
+        }
+
+        // If no longer a favorite, remove from user profile
+        if (foundReview.favorite && !req.body?.favorite) {
+            await removeFavoriteFromUserProfile(decodedCookie.userId, reviewId);
         }
 
         const updatedReview = await updateReviewById(reviewId, req.body);

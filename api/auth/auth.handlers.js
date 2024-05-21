@@ -125,7 +125,6 @@ const handleLogin = async (req, res) => {
     } catch (error) {
         logger.error('An error occurred: ', error);
         res.status(400).json(error);
-        // TODO: handle errors
     }
 };
 

@@ -43,3 +43,26 @@ describe("GET /api/connect/queryUser", () => {
         expect(searchResults.length).toBeGreaterThan(0);
     })
 });
+
+describe("GET /api/connect/:username/profile", () => {
+    it("Should return status code 200, message 'User's profile data fetched', and array of found users", async () => {
+        const loginRes = await request(testServer)
+            .post("/api/auth/login")
+            .send({
+                email: 'test@test.com',
+                password: 'password'
+            });
+
+        const cookies = loginRes.header['set-cookie'];
+
+        const res = await request(testServer)
+            .get("/api/connect/test/profile")
+            .set('Cookie', cookies)
+
+        const userProfileData = res.body.results;
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe("User's profile data fetched")
+        expect(userProfileData).not.toBe(null);
+    })
+});
