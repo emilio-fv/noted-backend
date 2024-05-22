@@ -85,7 +85,7 @@ describe("PUT /api/connect/:userId/follow", () => {
             .set('Cookie', cookies) 
 
         // Follow user
-        const userIdToFollow = searchRes.body.results[0]._id;
+        const userIdToFollow = searchRes.body.result._id;
 
         const followRes = await request(testServer)
             .put(`/api/connect/${userIdToFollow}/follow`)
@@ -102,5 +102,44 @@ describe("PUT /api/connect/:userId/follow", () => {
 
         expect(userProfileRes.statusCode).toBe(200);
         expect(userProfileRes.body.result.following.length).toBe(1);
+    })
+})
+
+describe("PUT /api/connect/:userId/unfollow", () => {
+    it("Should return status code 200, and message 'User unfollowed'", async () => {
+        // Login
+        const loginRes = await request(testServer)
+            .post("/api/auth/login")
+            .send({
+                email: 'test@test.com',
+                password: 'password'
+            });
+
+        const cookies = loginRes.header['set-cookie'];
+
+        // Search for user to obtain userId
+        const searchRes = await request(testServer)
+            .get("/api/connect/test2/profile")
+            .set('Cookie', cookies) 
+
+        // Follow user
+        const userIdToFollow = searchRes.body.result._id;
+
+        await request(testServer)
+            .put(`/api/connect/${userIdToFollow}/follow`)
+            .set('Cookie', cookies)
+
+        // Unfollow user
+        const unfollowRes = await request(testServer)
+        .put(`/api/connect/${userIdToFollow}/unfollow`)
+        .set('Cookie', cookies)
+
+        // Check user's profile data is updated
+        const userProfileRes = await request(testServer)
+            .get("/api/connect/test/profile")
+            .set('Cookie', cookies)
+
+        expect(userProfileRes.statusCode).toBe(200);
+        expect(userProfileRes.body.result.following.length).toBe(0);
     })
 })
