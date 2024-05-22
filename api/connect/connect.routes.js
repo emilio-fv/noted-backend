@@ -3,7 +3,8 @@ const express = require('express');
 const { authorization } = require('../../middleware/authorization');
 const { 
     handleQueryUsers, 
-    handleGetUsersProfileData 
+    handleGetUsersProfileData, 
+    handleFollowUser
 } = require('./connect.handlers');
 
 const router = express.Router();
@@ -11,6 +12,7 @@ const router = express.Router();
 // Connect API endpoints
 router.get('/queryUsers', authorization, handleQueryUsers);
 router.get('/:username/profile', authorization, handleGetUsersProfileData);
+router.put('/:userId/follow', authorization, handleFollowUser);
 
 // Exports
 module.exports = {

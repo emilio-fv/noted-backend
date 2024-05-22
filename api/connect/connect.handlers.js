@@ -2,7 +2,8 @@
 const logger = require('../../utils/logger.util');
 const { 
     getUsersByQuery,
-    getUsersProfileDataByUsername
+    getUsersProfileDataByUsername,
+    followUser
 } = require('./connect.services');
 
 const handleQueryUsers = async (req, res) => {
@@ -49,8 +50,31 @@ const handleGetUsersProfileData = async (req, res) => {
     }
 }
 
+const handleFollowUser = async (req, res) => {
+    logger.info('Following user...');
+
+    try {
+        const decodedCookie = req.decoded;
+        const { userId } = req.params;
+
+        const response = await followUser(decodedCookie.userId, userId);
+
+        res.status(200)
+            .json({
+                message: 'User followed',
+                updatedUser: response, // TODO remove before push
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+}
+
 // Exports
 module.exports = {
     handleQueryUsers,
-    handleGetUsersProfileData
+    handleGetUsersProfileData,
+    handleFollowUser,
 }
