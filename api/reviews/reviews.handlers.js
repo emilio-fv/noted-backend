@@ -15,6 +15,7 @@ const {
     getReviewsByArtistId
 } = require('./reviews.services');
 
+// Create review
 const handleCreateReview = async (req, res) => {
     logger.info('Creating review...');
 
@@ -60,6 +61,7 @@ const handleCreateReview = async (req, res) => {
     }
 };
 
+// Logged in user's reviews
 const handleGetLoggedInUsersReviews = async (req, res) => {
     logger.info("Getting logged in user's reviews");
 
@@ -85,6 +87,7 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
 
 // };
 
+// Album reviews
 const handleGetReviewsByAlbumId = async (req, res) => {
     logger.info('Getting reviews by album id');
 
@@ -106,6 +109,7 @@ const handleGetReviewsByAlbumId = async (req, res) => {
     }
 };
 
+// Artist reviews
 const handleGetReviewsByArtistId = async (req, res) => {
     logger.info('Getting reviews by artist id');
 
@@ -127,6 +131,7 @@ const handleGetReviewsByArtistId = async (req, res) => {
     }
 };
 
+// Update review
 const handleUpdateReview = async (req, res) => {
     logger.info('Updating review');
 
@@ -163,6 +168,7 @@ const handleUpdateReview = async (req, res) => {
     }
 };
 
+// Delete review
 const handleDeleteReview = async (req, res) => {
     logger.info("Deleting review");
 

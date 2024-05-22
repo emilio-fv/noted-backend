@@ -7,6 +7,7 @@ const {
     unfollowUser
 } = require('./connect.services');
 
+// Query users
 const handleQueryUsers = async (req, res) => {
     logger.info("Querying users...");
 
@@ -29,6 +30,7 @@ const handleQueryUsers = async (req, res) => {
     }
 };
 
+// Users profile data 
 const handleGetUsersProfileData = async (req, res) => {
     logger.info('Getting users profile data');
 
@@ -51,6 +53,7 @@ const handleGetUsersProfileData = async (req, res) => {
     }
 };
 
+// Follow user
 const handleFollowUser = async (req, res) => {
     logger.info('Following user...');
 
@@ -72,6 +75,7 @@ const handleFollowUser = async (req, res) => {
     }
 };
 
+// Unfollow user
 const handleUnfollowUser = async (req, res) => {
     logger.info('Unfollowing user...');
 
