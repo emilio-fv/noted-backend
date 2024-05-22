@@ -11,6 +11,15 @@ const generateUsers = async () => {
         confirmPassword: 'password',
     };
 
+    const devUser2 = {
+        firstName: 'Test2',
+        lastName: 'Test2',
+        username: 'test2',
+        email: 'test2@test.com',
+        password: 'password',
+        confirmPassword: 'password',
+    };
+
     let users = [];
 
     for (let i = 0; i < 10; i++) {
@@ -26,6 +35,7 @@ const generateUsers = async () => {
     }
 
     users.push(devUser);
+    users.push(devUser2);
 
     return users;
 };

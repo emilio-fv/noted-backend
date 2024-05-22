@@ -22,8 +22,23 @@ const getUsersProfileDataByUsername = async (username) => {
     return foundUser;
 };
 
+const followUser = async (loggedInUserId, userIdToFollow) => {
+    const updatedLoggedInUser = await User.findOneAndUpdate(
+        { _id: loggedInUserId }, 
+        { $push: { following: userIdToFollow }}
+    )
+
+    await User.findOneAndUpdate(
+        { _id: userIdToFollow }, 
+        { $push: { followers: loggedInUserId }}
+    )
+
+    return updatedLoggedInUser;
+}
+
 // Exports
 module.exports = {
     getUsersByQuery,
-    getUsersProfileDataByUsername
+    getUsersProfileDataByUsername,
+    followUser,
 };

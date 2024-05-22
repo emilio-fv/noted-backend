@@ -74,11 +74,16 @@ const userSchema = Schema({
     },
     favorites: {
         type: [favoriteSchema]
+    },
+    followers: {
+        type: [Schema.Types.ObjectId],
+    },
+    following: {
+        type: [Schema.Types.ObjectId],
     }
 }, 
 { 
     timestamps: true, 
-    // collection: 'users',
 });
 
 // Handle confirm password field
