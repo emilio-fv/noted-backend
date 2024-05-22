@@ -34,11 +34,26 @@ const followUser = async (loggedInUserId, userIdToFollow) => {
     )
 
     return updatedLoggedInUser;
-}
+};
+
+const unfollowUser = async (loggedInUserId, userIdToUnfollow) => {
+    const updatedLoggedInUser = await User.findOneAndUpdate(
+        { _id: loggedInUserId }, 
+        { $pull: { following: userIdToUnfollow }}
+    )
+
+    await User.findOneAndUpdate(
+        { _id: userIdToUnfollow }, 
+        { $pull: { followers: loggedInUserId }}
+    )
+
+    return updatedLoggedInUser;
+};
 
 // Exports
 module.exports = {
     getUsersByQuery,
     getUsersProfileDataByUsername,
     followUser,
+    unfollowUser,
 };

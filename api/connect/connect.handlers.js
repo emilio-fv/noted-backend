@@ -3,7 +3,8 @@ const logger = require('../../utils/logger.util');
 const { 
     getUsersByQuery,
     getUsersProfileDataByUsername,
-    followUser
+    followUser,
+    unfollowUser
 } = require('./connect.services');
 
 const handleQueryUsers = async (req, res) => {
@@ -48,7 +49,7 @@ const handleGetUsersProfileData = async (req, res) => {
         res.status(400)
             .json(errors);
     }
-}
+};
 
 const handleFollowUser = async (req, res) => {
     logger.info('Following user...');
@@ -57,12 +58,11 @@ const handleFollowUser = async (req, res) => {
         const decodedCookie = req.decoded;
         const { userId } = req.params;
 
-        const response = await followUser(decodedCookie.userId, userId);
+        await followUser(decodedCookie.userId, userId);
 
         res.status(200)
             .json({
                 message: 'User followed',
-                updatedUser: response, // TODO remove before push
             })
     } catch (errors) {
         logger.error(errors);
@@ -70,11 +70,33 @@ const handleFollowUser = async (req, res) => {
         res.status(400)
             .json(errors);
     }
-}
+};
+
+const handleUnfollowUser = async (req, res) => {
+    logger.info('Unfollowing user...');
+
+    try {
+        const decodedCookie = req.decoded;
+        const { userId } = req.params;
+
+        await unfollowUser(decodedCookie.userId, userId);
+
+        res.status(200)
+            .json({
+                message: 'User unfollowed',
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
 
 // Exports
 module.exports = {
     handleQueryUsers,
     handleGetUsersProfileData,
     handleFollowUser,
+    handleUnfollowUser,
 }
