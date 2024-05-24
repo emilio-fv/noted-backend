@@ -187,12 +187,7 @@ const handleGetLoggedInUsersData = async (req, res) => {
         const loggedInUser = await getUserById(decodedToken.userId);
 
         res.status(200)
-            .json({
-                firstName: loggedInUser.firstName,
-                lastName: loggedInUser.lastName,
-                username: loggedInUser.username,
-                email: loggedInUser.email
-            })
+            .json(loggedInUser)
     } catch (error) {
         logger.error('An error occurred: ', error);
 

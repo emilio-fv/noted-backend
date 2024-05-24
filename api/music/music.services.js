@@ -1,6 +1,7 @@
 // Imports
 const axios = require('axios');
 
+// Get Spotify access token from API
 const getSpotifyAccessToken = async () => {
     const response = axios.post('https://accounts.spotify.com/api/token', {
         'grant_type': 'client_credentials',
@@ -14,6 +15,7 @@ const getSpotifyAccessToken = async () => {
     return response;
 };
 
+// Get featured albums
 const getSpotifyFeaturedAlbums = async (spotifyToken) => {
     const numOfRequestedAlbums = 5;
 
@@ -29,6 +31,7 @@ const getSpotifyFeaturedAlbums = async (spotifyToken) => {
     return response;
 };
 
+// Query Spotify
 const querySpotify = async (spotifyToken, query) => {
     const response = await axios.get('https://api.spotify.com/v1/search', {
         headers: {
@@ -45,6 +48,7 @@ const querySpotify = async (spotifyToken, query) => {
     return response;
 };
 
+// Get artist's data
 const getArtistData = async (spotifyToken, artistId) => {
     const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}`, {
         headers: {
@@ -55,6 +59,7 @@ const getArtistData = async (spotifyToken, artistId) => {
     return response;
 };
 
+// Get artist's discography
 const getArtistsDiscographyData = async (spotifyToken, artistId) => {
     const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}/albums`, {
         headers: {
@@ -68,6 +73,7 @@ const getArtistsDiscographyData = async (spotifyToken, artistId) => {
     return response;
 }
 
+// Get album data
 const getAlbumData = async (spotifyToken, albumId) => {
     const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, {
         headers: {
@@ -78,6 +84,7 @@ const getAlbumData = async (spotifyToken, albumId) => {
     return response;
 }
 
+// Get album track list
 const getAlbumTracklistData = async (spotifyToken, albumId) => {
     const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, {
         headers: {
