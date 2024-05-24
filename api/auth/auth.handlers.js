@@ -13,6 +13,7 @@ const {
 } = require('./auth.services');
 const logger = require('../../utils/logger.util');
 
+// Register user
 const handleRegister = async (req, res) => {
     logger.info('Registering user...');
     try {
@@ -52,6 +53,8 @@ const handleRegister = async (req, res) => {
             })
             .json({
                 username: newUser.username,
+                followers: newUser.followers,
+                following: newUser.following
             })
     } catch (error) {
         logger.error('An error occurred: ', error);
@@ -71,6 +74,7 @@ const handleRegister = async (req, res) => {
     }
 };
 
+// Login user
 const handleLogin = async (req, res) => {
     logger.info('Logging user in...');
 
@@ -114,13 +118,8 @@ const handleLogin = async (req, res) => {
                 sameSite: 'none'
             })
             .json({
+                _id: existingUser[0]._id,
                 username: existingUser[0].username,
-                // firstName: existingUser.firstName,
-                // lastName: existingUser.lastName,
-                // reviews: existingUser.reviews,
-                // favorites: existingUser.favorites,
-                // following: existingUser.following,
-                // followers: existingUser.followers,
             })
     } catch (error) {
         logger.error('An error occurred: ', error);
@@ -178,6 +177,7 @@ const handleRefreshAccessToken = async (req, res) => {
     }
 };
 
+// TODO delete if not needed
 const handleGetLoggedInUsersData = async (req, res) => {
     logger.info("Getting logged in user's data");
 
@@ -187,12 +187,7 @@ const handleGetLoggedInUsersData = async (req, res) => {
         const loggedInUser = await getUserById(decodedToken.userId);
 
         res.status(200)
-            .json({
-                firstName: loggedInUser.firstName,
-                lastName: loggedInUser.lastName,
-                username: loggedInUser.username,
-                email: loggedInUser.email
-            })
+            .json(loggedInUser)
     } catch (error) {
         logger.error('An error occurred: ', error);
 

@@ -12,6 +12,7 @@ const logger = require('../../utils/logger.util');
 const { generateAccessToken } = require('../../utils/jwt.utils');
 const { parseSpotifyQueryResults, parseArtistsData, parseAlbumData } = require('../../utils/spotifyParsers.utils');
 
+// Spotify API access token
 const handleGetSpotifyAccessToken = async (req, res) => {
     logger.info('Requesting Spotify access token...');
 
@@ -38,6 +39,7 @@ const handleGetSpotifyAccessToken = async (req, res) => {
     }
 };
 
+// Get Spotify featured albums
 const handleGetSpotifyFeaturedAlbums = async (req, res) => {
     logger.info('Requesting featured albums from Spotify API...');
 
@@ -57,6 +59,7 @@ const handleGetSpotifyFeaturedAlbums = async (req, res) => {
     }
 };
 
+// Query Spotify
 const handleQuerySpotify = async (req, res) => {
     logger.info('Querying Spotify database...');
 
@@ -81,6 +84,7 @@ const handleQuerySpotify = async (req, res) => {
     }
 };
 
+// Get artist Spotify data
 const handleGetArtistsData = async (req, res) => {
     logger.info("Getting artist's data ...");
 
@@ -107,6 +111,7 @@ const handleGetArtistsData = async (req, res) => {
     }
 };
 
+// Get album Spotify data
 const handleGetAlbumsData = async (req, res) => {
     logger.info("Getting album's data ...");
 
