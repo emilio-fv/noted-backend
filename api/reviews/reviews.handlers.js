@@ -1,7 +1,9 @@
 // Imports
 const logger = require('../../utils/logger.util');
 const { 
-    getUserById
+    getUserById,
+    addFavoriteToUserProfile,
+    removeFavoriteFromUserProfile
  } = require('../auth/auth.services');
 const { 
     createReview, 
@@ -10,9 +12,12 @@ const {
     deleteReviewById,
     updateReviewById,
     getReviewsByAlbumId,
-    getReviewsByArtistId
+    getReviewsByArtistId,
+    getReviewsByUsername,
+    updateUsersReviewStats
 } = require('./reviews.services');
 
+// Create review
 const handleCreateReview = async (req, res) => {
     logger.info('Creating review...');
 
@@ -29,9 +34,28 @@ const handleCreateReview = async (req, res) => {
             }
         };
 
-        const response = await createReview(reviewData);
+        // Add to favorites if needed
+        if (reviewData.favorite) {
+            await addFavoriteToUserProfile(decodedToken.userId, { 
+                artist: reviewData.artist,
+                artistId: reviewData.artistId,
+                album: reviewData.album,
+                albumId: reviewData.albumId,
+                rating: reviewData.rating,
+                albumImages: reviewData.albumImages
+            })
+        }
 
-        
+        const response = await createReview(reviewData).then(async () => {
+            // Update user's review stats
+            const parsedDate = req.body.date.split('/');
+            const year = parsedDate[2];
+            await updateUsersReviewStats(decodedToken.userId, {
+                type: 'add',
+                year: year,
+            })
+        });
+
         res.status(200)
             .json({
                 message: 'Review successfully created',
@@ -45,6 +69,7 @@ const handleCreateReview = async (req, res) => {
     }
 };
 
+// Logged in user's reviews
 const handleGetLoggedInUsersReviews = async (req, res) => {
     logger.info("Getting logged in user's reviews");
 
@@ -66,6 +91,29 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
     }
 };
 
+// User profile's reviews
+const handleGetReviewsByUsername = async (req, res) => {
+    logger.info('Getting reviews by username');
+
+    try {
+        const { username } = req.params;
+
+        const response = await getReviewsByUsername(username);
+
+        res.status(200)
+            .json({
+                message: "Retrieved user's reviews",
+                results: response
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
+// Album reviews
 const handleGetReviewsByAlbumId = async (req, res) => {
     logger.info('Getting reviews by album id');
 
@@ -87,6 +135,7 @@ const handleGetReviewsByAlbumId = async (req, res) => {
     }
 };
 
+// Artist reviews
 const handleGetReviewsByArtistId = async (req, res) => {
     logger.info('Getting reviews by artist id');
 
@@ -108,6 +157,7 @@ const handleGetReviewsByArtistId = async (req, res) => {
     }
 };
 
+// Update review TODO UPDATE
 const handleUpdateReview = async (req, res) => {
     logger.info('Updating review');
 
@@ -124,7 +174,31 @@ const handleUpdateReview = async (req, res) => {
                 })
         }
 
-        const updatedReview = await updateReviewById(reviewId, req.body);
+        // If no longer a favorite, remove from user profile
+        if (foundReview.favorite && !req.body?.favorite) {
+            await removeFavoriteFromUserProfile(decodedCookie.userId, reviewId);
+        }
+
+        
+        const updatedReview = await updateReviewById(reviewId, req.body).then(async () => {
+            // format old & new year
+            const parsedOldDate = foundReview.date.split('/');
+            const parsedNewDate = req.body.date.split('/');
+
+            const oldYear = parsedOldDate[2];
+            const newYear = parsedNewDate[2];
+
+            // Check if date is a different year, if so update user review stats
+            if (formattedOldYear !== formattedNewYear) {
+                await updateUsersReviewStats(decodedCookie.userId, {
+                    type: 'update',
+                    old: oldYear,
+                    new: newYear,
+                })
+            } else {
+                return;
+            }
+        });
 
         res.status(200)
             .json({
@@ -139,6 +213,7 @@ const handleUpdateReview = async (req, res) => {
     }
 };
 
+// Delete review TODO UPDATE
 const handleDeleteReview = async (req, res) => {
     logger.info("Deleting review");
 
@@ -155,7 +230,17 @@ const handleDeleteReview = async (req, res) => {
                 })
         } 
 
-        await deleteReviewById(reviewId);
+        await deleteReviewById(reviewId).then(async () => {
+            // format date
+            const parsedDate = foundReview.date.split('/');
+            const year = parsedDate[2];
+
+            // update user's review stats
+            await updateUsersReviewStats(decodedCookie.userId, {
+                type: 'remove',
+                year: year,
+            })
+        });
 
         res.status(200)
             .json({
@@ -175,6 +260,7 @@ module.exports = {
     handleGetLoggedInUsersReviews,
     handleGetReviewsByAlbumId,
     handleGetReviewsByArtistId,
+    handleGetReviewsByUsername,
     handleUpdateReview,
     handleDeleteReview
 }
