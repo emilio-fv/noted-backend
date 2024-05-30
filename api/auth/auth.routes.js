@@ -16,7 +16,7 @@ router.post('/register', handleRegister);
 router.post('/login', handleLogin);
 router.post('/logout', handleLogout);
 router.get('/refresh', handleRefreshAccessToken);
-router.get('/', authorization, handleGetLoggedInUsersData);
+router.get('/', handleGetLoggedInUsersData);
 
 // Exports
 module.exports = {
