@@ -70,9 +70,10 @@ const main = async () => {
             await seedDb();
         }
 
-        app.listen(PORT, () => 
-            console.log('Noted Backend Server listening on port: ' + PORT)
-        );
+        app.listen(PORT, () => {            
+            console.log('Noted Backend Server listening on port: ' + PORT);
+            console.log(process.env.MONGODB_URI);
+        });
     } catch (error) {
         console.log(error);
     }
