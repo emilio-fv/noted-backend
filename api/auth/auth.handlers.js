@@ -183,10 +183,6 @@ const handleTestRoute = async (req, res) => {
     logger.info("Getting all user's data...");
 
     try {
-        // const decodedToken = req.decoded;
-
-        // const loggedInUser = await getUserById(decodedToken.userId);
-
         const allUsers = await getAllUsers();
 
         res.status(200)
