@@ -10,6 +10,7 @@ const {
     getUserByEmail,
     getUserByUsername,
     getUserById,
+    getAllUsers,
 } = require('./auth.services');
 const logger = require('../../utils/logger.util');
 
@@ -178,16 +179,18 @@ const handleRefreshAccessToken = async (req, res) => {
 };
 
 // TODO delete if not needed
-const handleGetLoggedInUsersData = async (req, res) => {
-    logger.info("Getting logged in user's data");
+const handleTestRoute = async (req, res) => {
+    logger.info("Getting all user's data...");
 
     try {
-        const decodedToken = req.decoded;
+        // const decodedToken = req.decoded;
 
-        const loggedInUser = await getUserById(decodedToken.userId);
+        // const loggedInUser = await getUserById(decodedToken.userId);
+
+        const allUsers = await getAllUsers();
 
         res.status(200)
-            .json(loggedInUser)
+            .json(allUsers);
     } catch (error) {
         logger.error('An error occurred: ', error);
 
@@ -202,5 +205,5 @@ module.exports = {
     handleLogin,
     handleLogout,
     handleRefreshAccessToken,
-    handleGetLoggedInUsersData
+    handleTestRoute
 };
