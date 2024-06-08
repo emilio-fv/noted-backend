@@ -21,6 +21,8 @@ jobs:
           echo ACCESS_EXPIRATION="${{ secrets.ACCESS_EXPIRATION }}" >> .env
           echo REFRESH_SECRET_KEY="${{ secrets.REFRESH_SECRET_KEY }}" >> .env
           echo REFRESH_EXPIRATION="${{ secrets.REFRESH_EXPIRATION }}" >> .env
+          echo SPOTIFY_CLIENT_ID="${{ secrets.SPOTIFY_CLIENT_ID }}" >> .env
+          echo SPOTIFY_CLIENT_SECRET="${{ secrets.SPOTIFY_CLIENT_SECRET }}" >> .env
         shell: bash
 
       - name: Build docker containers & run tests
