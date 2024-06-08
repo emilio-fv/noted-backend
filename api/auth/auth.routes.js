@@ -5,7 +5,7 @@ const {
     handleLogin, 
     handleLogout, 
     handleRefreshAccessToken, 
-    handleGetLoggedInUsersData
+    handleTestRoute
 } = require('./auth.handlers');
 const { authorization } = require('../../middleware/authorization');
 
@@ -16,7 +16,7 @@ router.post('/register', handleRegister);
 router.post('/login', handleLogin);
 router.post('/logout', handleLogout);
 router.get('/refresh', handleRefreshAccessToken);
-router.get('/', handleGetLoggedInUsersData);
+router.get('/', handleTestRoute);
 
 // Exports
 module.exports = {
