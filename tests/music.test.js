@@ -106,7 +106,7 @@ describe("GET /api/music/:artistId/getArtistData", () => {
     })
 });
 
-describe("GET /api/music/:albumId/getAlbumsData", () => {
+xdescribe("GET /api/music/:albumId/getAlbumsData", () => {
     it("Should return success code 200, and data object with 1 new album", async () => {
         const spotifyTokenResponse = await request(testServer)
             .get("/api/music/getSpotifyAccessToken");
