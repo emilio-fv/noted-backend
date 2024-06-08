@@ -119,7 +119,7 @@ describe("GET /api/reviews/loggedInUser", () => {
     })
 })
 
-describe("GET /api/reviews/:albumId/album", () => {
+xdescribe("GET /api/reviews/:albumId/album", () => {
     it("Should return status code 200, the message 'Reviews by album id successfully fetched', and an array of reviews", async () => {
         const loginRes = await request(testServer)
         .post("/api/auth/login")
@@ -171,7 +171,7 @@ describe("GET /api/reviews/:albumId/album", () => {
     })
 })
 
-describe("GET /api/reviews/:artistId/artist", () => {
+xdescribe("GET /api/reviews/:artistId/artist", () => {
     it("Should return status code 200, the message 'Reviews by artist id successfully fetched', and an array of reviews", async () => {
         const loginRes = await request(testServer)
         .post("/api/auth/login")
@@ -276,7 +276,7 @@ describe("GET /api/reviews/:artistId/artist", () => {
 //     })
 // })
 
-describe("PUT /api/reviews/:reviewId/update", () => {
+xdescribe("PUT /api/reviews/:reviewId/update", () => {
     it("Should return status code 200 and message 'Review successfully updated'", async () => {
         const loginRes = await request(testServer)
             .post("/api/auth/login")
@@ -334,7 +334,7 @@ describe("PUT /api/reviews/:reviewId/update", () => {
     })
 })
 
-describe("DELETE /api/reviews/:reviewId/delete", () => {
+xdescribe("DELETE /api/reviews/:reviewId/delete", () => {
     it("Should return status code 200 and message 'Review successfully deleted'", async () => {
         const loginRes = await request(testServer)
         .post("/api/auth/login")

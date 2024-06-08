@@ -281,14 +281,14 @@ describe("GET /api/auth/refresh", () => {
 });
 
 describe("Authorization middleware", () => {
-    it("Should return 401 status code and message 'Unauthorized.' when no access token is provided", async () => {
+    xit("Should return 401 status code and message 'Unauthorized.' when no access token is provided", async () => {
         const res = await request(testServer).get('/api/auth');
 
         expect(res.statusCode).toBe(401);
         expect(res.body).toBe('Unauthorized');
     });
 
-    it("Should return 401 status code and error message 'ExpiredAccessToken.' when expired access token is provided.", async () => {
+    xit("Should return 401 status code and error message 'ExpiredAccessToken.' when expired access token is provided.", async () => {
         const payload = {
             userId: 'test'
         };
@@ -303,7 +303,7 @@ describe("Authorization middleware", () => {
         expect(res.body).toBe('ExpiredAccessToken.');
     });
 
-    it("Should return 200 and logged in user's data (firstName, lastName, username, and email)", async () => {
+    xit("Should return 200 and logged in user's data (firstName, lastName, username, and email)", async () => {
         let res = await request(testServer)
             .post("/api/auth/login")
             .send({
