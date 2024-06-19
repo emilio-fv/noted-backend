@@ -14,7 +14,8 @@ const {
     getReviewsByAlbumId,
     getReviewsByArtistId,
     getReviewsByUsername,
-    updateUsersReviewStats
+    updateUsersReviewStats,
+    getFollowingUsersReviews
 } = require('./reviews.services');
 
 // Create review
@@ -81,6 +82,28 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
         res.status(200)
             .json({
                 message: 'Reviews by logged in user successfully fetched',
+                reviewsData: response,
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
+// Logged in user's reviews
+const handleGetFollowingUsersReviews = async (req, res) => {
+    logger.info("Getting following user's reviews");
+
+    try {
+        const decodedCookie = req.decoded;
+
+        const response = await getFollowingUsersReviews(decodedCookie.userId);
+
+        res.status(200)
+            .json({
+                message: 'Reviews by following user successfully fetched',
                 reviewsData: response,
             })
     } catch (errors) {
@@ -258,6 +281,7 @@ const handleDeleteReview = async (req, res) => {
 module.exports = {
     handleCreateReview,
     handleGetLoggedInUsersReviews,
+    handleGetFollowingUsersReviews,
     handleGetReviewsByAlbumId,
     handleGetReviewsByArtistId,
     handleGetReviewsByUsername,

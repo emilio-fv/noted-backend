@@ -20,6 +20,15 @@ const getLoggedInUsersReviews = async (userId) => {
     return reviews;
 };
 
+// Get following user's reviews
+const getFollowingUsersReviews = async (userId) => {
+    const foundUser = await User.findById(userId);
+
+    const reviews = await Review.find({ 'author.userId': { $in: foundUser.following }});
+
+    return reviews;
+};
+
 // Get review by review id
 const getReviewById = async (reviewId) => {
     const foundReview = await Review.findById(reviewId);
@@ -77,6 +86,7 @@ const deleteReviewById = async (reviewId) => {
 module.exports = {
     createReview,
     getLoggedInUsersReviews,
+    getFollowingUsersReviews,
     getReviewById,
     getReviewsByAlbumId,
     getReviewsByArtistId,
