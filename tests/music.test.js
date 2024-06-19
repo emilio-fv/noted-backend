@@ -62,7 +62,7 @@ describe("GET /api/music/querySpotify", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const loginCookies = loginRes.header['set-cookie'];
@@ -91,7 +91,7 @@ describe("GET /api/music/:artistId/getArtistData", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const loginCookies = loginRes.header['set-cookie'];
@@ -117,7 +117,7 @@ xdescribe("GET /api/music/:albumId/getAlbumsData", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const loginCookies = loginRes.header['set-cookie'];

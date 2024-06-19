@@ -121,8 +121,8 @@ describe("POST /api/auth/register", () => {
                 lastName: 'Vazquez',
                 username: 'milz6525',
                 email: 'email@email.com',
-                password: 'password',
-                confirmPassword: 'password'
+                password: 'Password1$',
+                confirmPassword: 'Password1$'
             });
 
         const cookies = res.header['set-cookie'];
@@ -164,7 +164,7 @@ describe("POST /api/auth/login", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const cookies = res.header['set-cookie'];
@@ -193,7 +193,7 @@ describe("POST /api/auth/logout", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const loginCookies = loginRes.header['set-cookie'];
@@ -308,7 +308,7 @@ describe("Authorization middleware", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const cookies = res.header['set-cookie'];

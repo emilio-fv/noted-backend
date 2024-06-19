@@ -70,7 +70,15 @@ const userSchema = Schema({
     password: {
         type: String,
         required: [true, 'Password required.'],
-        minLength: [8, 'Password must be at least 8 characters.']
+        minLength: [8, 'Password must be at least 8 characters.'],
+        maxLength: [64, 'Password must not be more than 64 characters.'],
+        validate: {
+            validator: function(v) {
+                const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+                return regex.test(v);
+            },
+            message: `Password must contain at least one number, one uppercase letter, one lowercase letter, and one symbol.`
+        }
     },
     favorites: {
         type: [favoriteSchema]
@@ -134,7 +142,6 @@ userSchema.methods.updateReviewStats = async function(reviewStats) {
         // If add -> { type: 'add', year: 'year' }
         // If remove -> { type: 'remove', year: 'year' }
         // If update -> { type: 'update', old: 'year', new: 'year }
-    
     switch (reviewStats.type) {
         case 'add':
             // add 1 to lifetime, 
