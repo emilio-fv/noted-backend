@@ -9,7 +9,7 @@ const {
     createUser,
     getUserByEmail,
     getUserByUsername,
-    getUserById,
+    // getUserById,
     getAllUsers,
 } = require('./auth.services');
 const logger = require('../../utils/logger.util');
@@ -36,6 +36,7 @@ const handleRegister = async (req, res) => {
 
         const payload = {
             userId: newUser._id,
+            username: newUser.username
         };
 
         const accessToken = await generateAccessToken(payload);
@@ -102,6 +103,7 @@ const handleLogin = async (req, res) => {
 
         const payload = {
             userId: existingUser[0].id,
+            username: existingUser[0].username,
         };
 
         const accessToken = await generateAccessToken(payload);
