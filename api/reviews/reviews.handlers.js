@@ -35,6 +35,18 @@ const handleCreateReview = async (req, res) => {
             }
         };
 
+        const response = await createReview(reviewData).then(async (response) => {
+            // Update user's review stats
+            const parsedDate = req.body.date.split('/');
+            const year = parsedDate[2];
+            await updateUsersReviewStats(decodedToken.userId, {
+                type: 'add',
+                year: year,
+            })
+
+            return response;
+        });
+
         // Add to favorites if needed
         if (reviewData.favorite) {
             await addFavoriteToUserProfile(decodedToken.userId, { 
@@ -43,19 +55,10 @@ const handleCreateReview = async (req, res) => {
                 album: reviewData.album,
                 albumId: reviewData.albumId,
                 rating: reviewData.rating,
-                albumImages: reviewData.albumImages
+                albumImages: reviewData.albumImages,
+                reviewId: response._id,
             })
         }
-
-        const response = await createReview(reviewData).then(async () => {
-            // Update user's review stats
-            const parsedDate = req.body.date.split('/');
-            const year = parsedDate[2];
-            await updateUsersReviewStats(decodedToken.userId, {
-                type: 'add',
-                year: year,
-            })
-        });
 
         res.status(200)
             .json({
@@ -252,6 +255,12 @@ const handleDeleteReview = async (req, res) => {
                     message: 'User unauthorized to manage resource'
                 })
         } 
+
+        // Check if favorite
+        if (foundReview.favorite) {
+            // remove from favorites
+            await removeFavoriteFromUserProfile(decodedCookie.userId, reviewId);
+        }
 
         await deleteReviewById(reviewId).then(async () => {
             // format date

@@ -38,7 +38,10 @@ const favoriteSchema = Schema({
         type: Number,
       },
       albumImages: {
-        type: [spotifyImageSchema]
+        type: [spotifyImageSchema],
+      },
+      reviewId: {
+        type: Schema.Types.ObjectId,
       }
 });
 
@@ -120,7 +123,7 @@ userSchema.pre('validate', function(next) {
     next();
 });
 
-// hash password
+// Hash password
 userSchema.pre('save', async function save(next) {
     if (this.isNew) {
         try {
@@ -135,43 +138,6 @@ userSchema.pre('save', async function save(next) {
         next();
     }
 });
-
-// Update review stats
-userSchema.methods.updateReviewStats = async function(reviewStats) {
-    // Update review stats based on type
-        // If add -> { type: 'add', year: 'year' }
-        // If remove -> { type: 'remove', year: 'year' }
-        // If update -> { type: 'update', old: 'year', new: 'year }
-    switch (reviewStats.type) {
-        case 'add':
-            // add 1 to lifetime, 
-            this.reviewStats.lifetime++;
-            // add 1 to the year -> check if year has been set & update
-            if (this.reviewStats.byYear.get(reviewStats.year)) {
-                this.reviewStats.byYear.set(reviewStats.year, this.reviewStats.byYear.get(reviewStats.year) + 1)
-            } else {
-                this.reviewStats.byYear.set(reviewStats.year, 1);
-            }
-            break;
-        case 'remove':
-            // remove 1 from lifetime 
-            this.reviewStats.lifetime--;
-            // remove 1 from the year
-            this.reviewStats.byYear.set(reviewStats.year, this.reviewStats.byYear.get(reviewStats.year) - 1 );
-            break;
-        case 'update':
-            // add 1 to the new year
-            this.reviewStats.byYear.set(reviewStats.old, this.reviewStats.byYear.get(reviewStats.old) - 1 );
-            // remove 1 from the old year
-            this.reviewStats.byYear.set(reviewStats.new, this.reviewStats.byYear.get(reviewStats.new) + 1 );
-            break;
-        default:
-            break;
-    }
-
-    await this.save();
-    return this;
-}
 
 // Generate user model
 const User = mongoose.model('User', userSchema);
