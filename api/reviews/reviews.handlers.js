@@ -15,7 +15,9 @@ const {
     getReviewsByArtistId,
     getReviewsByUsername,
     updateUsersReviewStats,
-    getFollowingUsersReviews
+    getFollowingUsersReviews,
+    likeReview,
+    unlikeReview
 } = require('./reviews.services');
 
 // Create review
@@ -183,7 +185,7 @@ const handleGetReviewsByArtistId = async (req, res) => {
     }
 };
 
-// Update review TODO UPDATE
+// Update review
 const handleUpdateReview = async (req, res) => {
     logger.info('Updating review');
 
@@ -231,6 +233,38 @@ const handleUpdateReview = async (req, res) => {
                 message: 'Review successfully updated',
                 updatedReview: updatedReview
             })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
+// Like review
+const handleLikeReview = async (req, res) => {
+    logger.info('Liking review...');
+    try {
+        const response = await likeReview(req.params.reviewId, req.decoded.username);
+
+        res.status(200)
+            .json(response);
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
+// Unlike review
+const handleUnlikeReview = async (req, res) => {
+    logger.info('Unliking review...');
+    try {
+        const response = await unlikeReview(req.params.reviewId, req.decoded.username);
+
+        res.status(200)
+            .json(response);
     } catch (errors) {
         logger.error(errors);
 
@@ -295,5 +329,7 @@ module.exports = {
     handleGetReviewsByArtistId,
     handleGetReviewsByUsername,
     handleUpdateReview,
+    handleLikeReview,
+    handleUnlikeReview,
     handleDeleteReview
 }

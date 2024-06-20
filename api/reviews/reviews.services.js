@@ -74,9 +74,6 @@ const updateUsersReviewStats = async (userId, reviewStats) => {
 
     let updatedStats = {...foundUser.reviewStats};
 
-    console.log(reviewStats);
-    console.log(updatedStats);
-
     switch (reviewStats.type) {
         case 'add':
             // add 1 to lifetime, 
@@ -109,7 +106,31 @@ const updateUsersReviewStats = async (userId, reviewStats) => {
     });
 
     return;
-}
+};
+
+// Like review
+const likeReview = async (reviewId, username) => {
+    const updatedReview = await Review.findByIdAndUpdate(reviewId, 
+        { $push: { likes: username } },
+        { new: true }
+    );
+
+    return updatedReview;
+};
+
+// Unlike review
+const unlikeReview = async (reviewId, username) => {
+    const foundReview = await Review.findById(reviewId);
+
+    const updatedLikes = foundReview.likes.filter((item) => item !== username);
+
+    const updatedReview = await Review.findByIdAndUpdate(reviewId, 
+        { likes: updatedLikes },
+        { new: true }
+    );
+
+    return updatedReview;
+};
 
 // Delete review by review id
 const deleteReviewById = async (reviewId) => {
@@ -129,5 +150,7 @@ module.exports = {
     getReviewsByUsername,
     updateReviewById,
     updateUsersReviewStats,
+    likeReview,
+    unlikeReview,
     deleteReviewById,
 };

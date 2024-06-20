@@ -9,7 +9,9 @@ const {
     handleGetReviewsByAlbumId,
     handleGetReviewsByArtistId,
     handleGetReviewsByUsername,
-    handleGetFollowingUsersReviews
+    handleGetFollowingUsersReviews,
+    handleLikeReview,
+    handleUnlikeReview
 } = require('./reviews.handlers');
 
 const router = express.Router();
@@ -22,6 +24,8 @@ router.get('/:albumId/album', authorization, handleGetReviewsByAlbumId);
 router.get('/:artistId/artist', authorization, handleGetReviewsByArtistId);
 router.get('/:username/profile', authorization, handleGetReviewsByUsername);
 router.put('/:reviewId/update', authorization, handleUpdateReview);
+router.put('/:reviewId/like', authorization, handleLikeReview);
+router.put('/:reviewId/unlike', authorization, handleUnlikeReview);
 router.delete('/:reviewId/delete', authorization, handleDeleteReview);
 
 // Exports
