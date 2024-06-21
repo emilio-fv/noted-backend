@@ -27,7 +27,7 @@ describe("GET /api/connect/queryUser", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const cookies = loginRes.header['set-cookie'];
@@ -50,7 +50,7 @@ describe("GET /api/connect/:username/profile", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const cookies = loginRes.header['set-cookie'];
@@ -74,7 +74,7 @@ describe("PUT /api/connect/:userId/follow", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const cookies = loginRes.header['set-cookie'];
@@ -112,7 +112,7 @@ describe("PUT /api/connect/:userId/unfollow", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const cookies = loginRes.header['set-cookie'];
