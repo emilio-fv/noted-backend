@@ -25,7 +25,7 @@ describe("POST /api/reviews/createReview", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const cookies = loginRes.header['set-cookie'];
@@ -73,7 +73,7 @@ describe("GET /api/reviews/loggedInUser", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const cookies = loginRes.header['set-cookie'];
@@ -125,7 +125,7 @@ xdescribe("GET /api/reviews/:albumId/album", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const cookies = loginRes.header['set-cookie'];
@@ -177,7 +177,7 @@ xdescribe("GET /api/reviews/:artistId/artist", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const cookies = loginRes.header['set-cookie'];
@@ -230,7 +230,7 @@ xdescribe("GET /api/reviews/:artistId/artist", () => {
 //         .post("/api/auth/login")
 //         .send({
 //             email: 'test@test.com',
-//             password: 'password'
+//             password: 'Password1$'
 //         });
 
 //         const cookies = loginRes.header['set-cookie'];
@@ -282,7 +282,7 @@ xdescribe("PUT /api/reviews/:reviewId/update", () => {
             .post("/api/auth/login")
             .send({
                 email: 'test@test.com',
-                password: 'password'
+                password: 'Password1$'
             });
 
         const cookies = loginRes.header['set-cookie'];
@@ -340,7 +340,7 @@ xdescribe("DELETE /api/reviews/:reviewId/delete", () => {
         .post("/api/auth/login")
         .send({
             email: 'test@test.com',
-            password: 'password'
+            password: 'Password1$'
         });
 
         const cookies = loginRes.header['set-cookie'];

@@ -7,8 +7,8 @@ const generateUsers = async () => {
         lastName: 'Test',
         username: 'test',
         email: 'test@test.com',
-        password: 'password',
-        confirmPassword: 'password',
+        password: 'Password1$',
+        confirmPassword: 'Password1$',
     };
 
     const devUser2 = {
@@ -16,8 +16,8 @@ const generateUsers = async () => {
         lastName: 'Test2',
         username: 'test2',
         email: 'test2@test.com',
-        password: 'password',
-        confirmPassword: 'password',
+        password: 'Password1$',
+        confirmPassword: 'Password1$',
     };
 
     let users = [];

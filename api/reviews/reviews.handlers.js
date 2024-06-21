@@ -14,7 +14,10 @@ const {
     getReviewsByAlbumId,
     getReviewsByArtistId,
     getReviewsByUsername,
-    updateUsersReviewStats
+    updateUsersReviewStats,
+    getFollowingUsersReviews,
+    likeReview,
+    unlikeReview
 } = require('./reviews.services');
 
 // Create review
@@ -34,6 +37,18 @@ const handleCreateReview = async (req, res) => {
             }
         };
 
+        const response = await createReview(reviewData).then(async (response) => {
+            // Update user's review stats
+            const parsedDate = req.body.date.split('/');
+            const year = parsedDate[2];
+            await updateUsersReviewStats(decodedToken.userId, {
+                type: 'add',
+                year: year,
+            })
+
+            return response;
+        });
+
         // Add to favorites if needed
         if (reviewData.favorite) {
             await addFavoriteToUserProfile(decodedToken.userId, { 
@@ -42,19 +57,10 @@ const handleCreateReview = async (req, res) => {
                 album: reviewData.album,
                 albumId: reviewData.albumId,
                 rating: reviewData.rating,
-                albumImages: reviewData.albumImages
+                albumImages: reviewData.albumImages,
+                reviewId: response._id,
             })
         }
-
-        const response = await createReview(reviewData).then(async () => {
-            // Update user's review stats
-            const parsedDate = req.body.date.split('/');
-            const year = parsedDate[2];
-            await updateUsersReviewStats(decodedToken.userId, {
-                type: 'add',
-                year: year,
-            })
-        });
 
         res.status(200)
             .json({
@@ -81,6 +87,28 @@ const handleGetLoggedInUsersReviews = async (req, res) => {
         res.status(200)
             .json({
                 message: 'Reviews by logged in user successfully fetched',
+                reviewsData: response,
+            })
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
+// Logged in user's reviews
+const handleGetFollowingUsersReviews = async (req, res) => {
+    logger.info("Getting following user's reviews");
+
+    try {
+        const decodedCookie = req.decoded;
+
+        const response = await getFollowingUsersReviews(decodedCookie.userId);
+
+        res.status(200)
+            .json({
+                message: 'Reviews by following user successfully fetched',
                 reviewsData: response,
             })
     } catch (errors) {
@@ -157,7 +185,7 @@ const handleGetReviewsByArtistId = async (req, res) => {
     }
 };
 
-// Update review TODO UPDATE
+// Update review
 const handleUpdateReview = async (req, res) => {
     logger.info('Updating review');
 
@@ -213,6 +241,38 @@ const handleUpdateReview = async (req, res) => {
     }
 };
 
+// Like review
+const handleLikeReview = async (req, res) => {
+    logger.info('Liking review...');
+    try {
+        const response = await likeReview(req.params.reviewId, req.decoded.username);
+
+        res.status(200)
+            .json(response);
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
+// Unlike review
+const handleUnlikeReview = async (req, res) => {
+    logger.info('Unliking review...');
+    try {
+        const response = await unlikeReview(req.params.reviewId, req.decoded.username);
+
+        res.status(200)
+            .json(response);
+    } catch (errors) {
+        logger.error(errors);
+
+        res.status(400)
+            .json(errors);
+    }
+};
+
 // Delete review TODO UPDATE
 const handleDeleteReview = async (req, res) => {
     logger.info("Deleting review");
@@ -229,6 +289,12 @@ const handleDeleteReview = async (req, res) => {
                     message: 'User unauthorized to manage resource'
                 })
         } 
+
+        // Check if favorite
+        if (foundReview.favorite) {
+            // remove from favorites
+            await removeFavoriteFromUserProfile(decodedCookie.userId, reviewId);
+        }
 
         await deleteReviewById(reviewId).then(async () => {
             // format date
@@ -258,9 +324,12 @@ const handleDeleteReview = async (req, res) => {
 module.exports = {
     handleCreateReview,
     handleGetLoggedInUsersReviews,
+    handleGetFollowingUsersReviews,
     handleGetReviewsByAlbumId,
     handleGetReviewsByArtistId,
     handleGetReviewsByUsername,
     handleUpdateReview,
+    handleLikeReview,
+    handleUnlikeReview,
     handleDeleteReview
 }

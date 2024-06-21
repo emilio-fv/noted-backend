@@ -65,6 +65,9 @@ const reviewSchema = new Schema({
       type: authorDataSchema,
       required: true
     },
+    likes: {
+      type: [String],
+    }
 }, { timestamps: true, collection: 'reviews' });
 
 // Generate review model
