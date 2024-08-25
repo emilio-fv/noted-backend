@@ -26,18 +26,16 @@ const getUsersProfileDataByUsername = async (username) => {
 
 // Follow user
 const followUser = async (loggedInUserId, userIdToFollow) => {
-    console.log(loggedInUserId);
-    console.log(userIdToFollow);
-
     const updatedLoggedInUser = await User.findOneAndUpdate(
         { _id: loggedInUserId }, 
-        { $push: { following: userIdToFollow } },
+        { $addToSet: { following: userIdToFollow } },
         { new: true }
     );
 
-    const updatedUserToFollow = await User.findOneAndUpdate(
+    // Update user following
+    await User.findOneAndUpdate(
         { _id: userIdToFollow }, 
-        { $push: { followers: loggedInUserId }},
+        { $addToSet: { followers: loggedInUserId }},
         { new: true }
     )
 

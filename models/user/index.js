@@ -1,49 +1,8 @@
 // Imports
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { favoriteSchema } = require('../favorite');
 const { Schema } = mongoose;
-
-// Spotify image schema
-const spotifyImageSchema = new Schema({
-    url: {
-      type: String,
-    },
-    height: {
-      type: Number,
-    },
-    width: {
-      type: Number,
-    },
-});
-
-// Favorites schema
-const favoriteSchema = Schema({
-    artist: {
-        type: String,
-        required: true,
-      },
-      artistId: {
-        type: String,
-        required: true
-      },
-      album: {
-        type: String, 
-        required: true
-      },
-      albumId: {
-        type: String,
-        required: true
-      },
-      rating: {
-        type: Number,
-      },
-      albumImages: {
-        type: [spotifyImageSchema],
-      },
-      reviewId: {
-        type: Schema.Types.ObjectId,
-      }
-});
 
 // User schema
 const userSchema = Schema({
@@ -58,7 +17,6 @@ const userSchema = Schema({
     username: {
         type: String,
         required: [true, 'Username required.'],
-        // unique: [true, 'Username already registered'],
     },
     email: {
         type: String,

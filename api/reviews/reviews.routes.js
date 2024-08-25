@@ -11,7 +11,7 @@ const {
     handleGetReviewsByUsername,
     handleGetFollowingUsersReviews,
     handleLikeReview,
-    handleUnlikeReview
+    handleUnlikeReview,
 } = require('./reviews.handlers');
 
 const router = express.Router();

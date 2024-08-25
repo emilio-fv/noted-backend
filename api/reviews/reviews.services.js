@@ -1,4 +1,5 @@
 // Imports 
+const { Types } = require('mongoose');
 const { Review } = require('../../models/review');
 const { User } = require('../../models/user');
 
@@ -12,47 +13,143 @@ const createReview = async (reviewData) => {
 };
 
 // Get logged in user's reviews
-const getLoggedInUsersReviews = async (userId) => {
-    // Query database
-    const reviews = await Review.find({ 'author.userId': userId }).sort({ createdAt: -1 });
+const getLoggedInUsersReviews = async (userIdStr) => {
+    const userId = Types.ObjectId.createFromHexString(userIdStr);
+
+    // Configure aggregate pipeline
+    const aggregatePipeline = [
+        { 
+            $match: { 'author.userId': userId },
+        },
+        {            
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'reviewId',
+                as: 'comments'
+            }
+        }
+    ];
+
+    // Aggregate data from comments and reviews collection
+    const reviews = await Review.aggregate(aggregatePipeline);
 
     // Return reviews
     return reviews;
 };
 
 // Get following user's reviews
-const getFollowingUsersReviews = async (userId) => {
+const getFollowingUsersReviews = async (userIdStr) => {
+    const userId = Types.ObjectId.createFromHexString(userIdStr);
     const foundUser = await User.findById(userId);
 
-    const reviews = await Review.find({ 'author.userId': { $in: foundUser.following }});
+    // Configure aggregate pipeline
+    const aggregatePipeline = [
+        {
+            $match: { 'author.userId': { $in: foundUser.following } }
+        },
+        {
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'reviewId',
+                as: 'comments'
+            }
+        }
+    ]
+
+    // Aggregate data from comments and reviews collection
+    const reviews = await Review.aggregate(aggregatePipeline);
 
     return reviews;
 };
 
 // Get review by review id
-const getReviewById = async (reviewId) => {
-    const foundReview = await Review.findById(reviewId);
+const getReviewById = async (reviewIdStr) => {
+    const reviewId = Types.ObjectId.createFromHexString(reviewIdStr);
 
-    return foundReview;
+    // Configure aggregate pipeline
+    const aggregatePipeline = [
+        {
+            $match: { '_id': reviewId }
+        },
+        {
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'reviewId',
+                as: 'comments'
+            }
+        }
+    ]
+
+    const foundReview = await Review.aggregate(aggregatePipeline);
+
+    return foundReview.length > 0 ? foundReview[0] : null;
 };
 
 // Get reviews by album id
 const getReviewsByAlbumId = async (albumId) => {
-    const foundReviews = await Review.find({ albumId: albumId });
+    // Configure aggregate pipeline
+    const aggregatePipeline = [
+        { 
+            $match: { 'albumId': albumId },
+        },
+        {            
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'reviewId',
+                as: 'comments'
+            }
+        }
+    ];
+
+    const foundReviews = await Review.aggregate(aggregatePipeline);
 
     return foundReviews;
 };
 
 // Get reviews by artist id
 const getReviewsByArtistId = async (artistId) => {
-    const foundReviews = await Review.find({ artistId: artistId });
+    // TODO aggregate
+    const aggregatePipeline = [
+        { 
+            $match: { 'artistId': artistId },
+        },
+        {            
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'reviewId',
+                as: 'comments'
+            }
+        }
+    ];
+
+    const foundReviews = await Review.aggregate(aggregatePipeline);
 
     return foundReviews;
 };
 
 // Get reviews by username
 const getReviewsByUsername = async (username) => {
-    const foundReviews = await Review.find({ 'author.username': username });
+    // TODO aggregate
+    const aggregatePipeline = [
+        { 
+            $match: { 'author.username': username },
+        },
+        {            
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'reviewId',
+                as: 'comments'
+            }
+        }
+    ];
+
+    const foundReviews = await Review.aggregate(aggregatePipeline);
 
     return foundReviews;
 };
@@ -111,7 +208,7 @@ const updateUsersReviewStats = async (userId, reviewStats) => {
 // Like review
 const likeReview = async (reviewId, username) => {
     const updatedReview = await Review.findByIdAndUpdate(reviewId, 
-        { $push: { likes: username } },
+        { $addToSet: { likes: username } },
         { new: true }
     );
 

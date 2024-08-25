@@ -23,7 +23,7 @@ const generateUsers = async () => {
     let users = [];
 
     for (let i = 0; i < 10; i++) {
-        let password = faker.internet.password();
+        let password = 'Password1$';
         users.push({
             firstName: faker.person.firstName(),
             lastName: faker.person.lastName(),

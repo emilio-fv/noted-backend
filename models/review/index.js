@@ -1,29 +1,8 @@
 // Imports
 const mongoose = require('mongoose');
+const { spotifyImageSchema } = require('../spotifyImage');
+const { authorDataSchema } = require('../authorData');
 const { Schema } = mongoose;
-
-const spotifyImageSchema = new Schema({
-    url: {
-      type: String,
-    },
-    height: {
-      type: Number,
-    },
-    width: {
-      type: Number,
-    },
-});
-
-const authorDataSchema = new Schema({
-    userId: { 
-        type: Schema.Types.ObjectId, 
-        required: true 
-    },
-    username: { 
-        type: String, 
-        required: true 
-    }
-}, { _id: false });
 
 // Review schema
 const reviewSchema = new Schema({
@@ -67,7 +46,7 @@ const reviewSchema = new Schema({
     },
     likes: {
       type: [String],
-    }
+    },
 }, { timestamps: true, collection: 'reviews' });
 
 // Generate review model

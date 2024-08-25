@@ -10,6 +10,7 @@ const { authRouter } = require('./api/auth/auth.routes');
 const { musicRouter } = require('./api/music/music.routes');
 const { reviewsRouter } = require('./api/reviews/reviews.routes');
 const { connectRouter } = require('./api/connect/connect.routes');
+const { commentsRouter } = require('./api/comments/comments.routes');
 
 // Instantiate & configure server
 const app = express();
@@ -50,6 +51,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/music', musicRouter);
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/connect', connectRouter);
+app.use('/api/comments', commentsRouter);
 
 // Entry API endpoint
 app.get('/', async (req, res) => {

@@ -5,6 +5,7 @@ const {
     addFavoriteToUserProfile,
     removeFavoriteFromUserProfile
  } = require('../auth/auth.services');
+const { deleteManyComments } = require('../comments/comments.services');
 const { 
     createReview, 
     getLoggedInUsersReviews,
@@ -17,7 +18,7 @@ const {
     updateUsersReviewStats,
     getFollowingUsersReviews,
     likeReview,
-    unlikeReview
+    unlikeReview,
 } = require('./reviews.services');
 
 // Create review
@@ -192,9 +193,9 @@ const handleUpdateReview = async (req, res) => {
     try {
         const { reviewId } = req.params;
         const decodedCookie = req.decoded;
-
         const foundReview = await getReviewById(reviewId);
 
+        // Check if logged in user and author of review are the same
         if (foundReview.author.userId != decodedCookie.userId) {
             res.status(401)
                 .json({
@@ -203,30 +204,49 @@ const handleUpdateReview = async (req, res) => {
         }
 
         // If no longer a favorite, remove from user profile
-        if (foundReview.favorite && !req.body?.favorite) {
+        if (foundReview.favorite == true && req.body?.favorite != false) {
+            console.log('removing from favorites');
+
             await removeFavoriteFromUserProfile(decodedCookie.userId, reviewId);
         }
 
-        
-        const updatedReview = await updateReviewById(reviewId, req.body).then(async () => {
-            // format old & new year
+        // If favorited, add to user profile
+        if (foundReview.favorite == false && req.body?.favorite == true) {
+            console.log('adding to favorites');
+
+            const favoriteData = {
+                artist: foundReview.artist,
+                artistId: foundReview.artistId,
+                album: foundReview.album,
+                albumId: foundReview.albumId,
+                rating: foundReview.rating,
+                albumImages: foundReview.albumImages,
+                reviewId: foundReview._id,
+            };
+
+            await addFavoriteToUserProfile(decodedCookie.userId, favoriteData);
+        }
+
+        // If the year of the review date is different, then update review stats
+        if (req.body?.date) {
+            console.log('Updating review stats');
             const parsedOldDate = foundReview.date.split('/');
             const parsedNewDate = req.body.date.split('/');
-
             const oldYear = parsedOldDate[2];
             const newYear = parsedNewDate[2];
 
             // Check if date is a different year, if so update user review stats
-            if (formattedOldYear !== formattedNewYear) {
+            if (oldYear !== newYear) {
                 await updateUsersReviewStats(decodedCookie.userId, {
                     type: 'update',
                     old: oldYear,
                     new: newYear,
                 })
-            } else {
-                return;
-            }
-        });
+            } 
+        }
+
+        // Update review
+        const updatedReview = await updateReviewById(reviewId, req.body);
 
         res.status(200)
             .json({
@@ -273,7 +293,7 @@ const handleUnlikeReview = async (req, res) => {
     }
 };
 
-// Delete review TODO UPDATE
+// Delete review 
 const handleDeleteReview = async (req, res) => {
     logger.info("Deleting review");
 
@@ -283,6 +303,7 @@ const handleDeleteReview = async (req, res) => {
 
         const foundReview = await getReviewById(reviewId);
 
+        // Check if logged in user matches author id of review
         if (foundReview.author.userId != decodedCookie.userId) {
             res.status(401)
                 .json({
@@ -290,12 +311,19 @@ const handleDeleteReview = async (req, res) => {
                 })
         } 
 
-        // Check if favorite
+        // TODO Check if favorited 
         if (foundReview.favorite) {
             // remove from favorites
             await removeFavoriteFromUserProfile(decodedCookie.userId, reviewId);
         }
 
+        // TODO Check if there are comments
+        if (foundReview.comments.length > 0) {
+            // Delete any comments
+            await deleteManyComments(foundReview._id);
+        }
+
+        // TODO Delete review
         await deleteReviewById(reviewId).then(async () => {
             // format date
             const parsedDate = foundReview.date.split('/');

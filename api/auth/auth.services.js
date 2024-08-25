@@ -1,5 +1,4 @@
 // Imports
-const { Review } = require('../../models/review');
 const { User } = require('../../models/user');
 
 // Create user
@@ -33,25 +32,21 @@ const getAllUsers = async () => {
 };
 
 const addFavoriteToUserProfile = async (userId, reviewData) => {
-    console.log(reviewData);
-
     const updatedUser = await User.findOneAndUpdate(
         { _id: userId },
-        { $push: { favorites: reviewData }}
+        { $addToSet: { favorites: reviewData }},
+        { new: true }
     )
 
     return updatedUser;
 };
 
 const removeFavoriteFromUserProfile = async (userId, reviewId) => {
-    console.log(userId, reviewId);
-
     const updatedUser = await User.findOneAndUpdate(
         { _id: userId },
         { $pull: { favorites: { reviewId: reviewId } }}
     )
 
-    console.log(updatedUser);
     return updatedUser;
 };
 
